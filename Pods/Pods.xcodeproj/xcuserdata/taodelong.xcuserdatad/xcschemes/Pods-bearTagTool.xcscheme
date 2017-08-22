@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1192BE8B1F4C09B600C834F8"
-               BuildableName = "bearTagTool.app"
-               BlueprintName = "bearTagTool"
-               ReferencedContainer = "container:bearTagTool.xcodeproj">
+               BlueprintIdentifier = "5EDD79F05B1B6E0706C9B74AA627ED74"
+               BuildableName = "Pods_bearTagTool.framework"
+               BlueprintName = "Pods-bearTagTool"
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,15 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1192BE8B1F4C09B600C834F8"
-            BuildableName = "bearTagTool.app"
-            BlueprintName = "bearTagTool"
-            ReferencedContainer = "container:bearTagTool.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -51,23 +42,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1192BE8B1F4C09B600C834F8"
-            BuildableName = "bearTagTool.app"
-            BlueprintName = "bearTagTool"
-            ReferencedContainer = "container:bearTagTool.xcodeproj">
+            BlueprintIdentifier = "5EDD79F05B1B6E0706C9B74AA627ED74"
+            BuildableName = "Pods_bearTagTool.framework"
+            BlueprintName = "Pods-bearTagTool"
+            ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "OS_ACTIVITY_MODE"
-            value = "disable"
-            isEnabled = "NO">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -77,16 +60,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1192BE8B1F4C09B600C834F8"
-            BuildableName = "bearTagTool.app"
-            BlueprintName = "bearTagTool"
-            ReferencedContainer = "container:bearTagTool.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
