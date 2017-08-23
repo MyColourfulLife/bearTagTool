@@ -17,8 +17,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        
+        self.getDeviceInfo()
+        
+        
         return true
     }
+    
+    
+    /// 存储设备信息
+    func getDeviceInfo() -> Void {
+        //        获取设备信息
+        
+        if (UserDefaults.standard.string(forKey: UserDefaultKeys.DeviceInfo.uuid.rawValue) == nil) {
+            DeviceInfoManager().getDeviceInfo()
+        } else {
+            
+            //            模型信息 手机版本 uuid
+            let userDefalut = UserDefaults.standard
+            let modelName = userDefalut.string(forKey: UserDefaultKeys.DeviceInfo.modelName.rawValue)
+            let systemVersion = userDefalut.string(forKey: UserDefaultKeys.DeviceInfo.sysVersion.rawValue)
+            let uuidString = userDefalut.string(forKey: UserDefaultKeys.DeviceInfo.uuid.rawValue)
+            
+            print(modelName!)
+            print(systemVersion!)
+            print(uuidString!)
+            
+        }
+
+    }
+    
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
