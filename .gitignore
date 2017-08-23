@@ -24,3 +24,15 @@ Pods
 !Podfile
 !Podfile.lock
 
+## Other
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+
+## Obj-C/Swift specific
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
