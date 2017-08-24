@@ -9,4 +9,8 @@ target 'bearTagTool' do
 
   pod 'SnapKit', '~> 3.2.0'
 
+  pod 'SDWebImage'
+
+  pod 'MBProgressHUD'	
+
 end

@@ -4,7 +4,17 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>MBProgressHUD.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-bearTagTool.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -17,12 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>5EDD79F05B1B6E0706C9B74AA627ED74</key>
+		<key>41FA54D12162DAD51D02FC58A2CD5034</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>762078AF47F576879E45DDF5CBED102A</key>
+		<key>4EF39D29B185411DC8E1545B40EE8961</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A1A6E5518B7DCDD1D46A854892DD2136</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F20D39DED16D2876FE2FB03EEEC003F4</key>
 		<dict>
 			<key>primary</key>
 			<true/>

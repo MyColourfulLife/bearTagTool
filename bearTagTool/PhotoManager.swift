@@ -61,7 +61,11 @@ class PhotoManager: NSObject {
     
     
     func createFile(at filePath:String, contents:Data) {
-        file_manager.createFile(atPath: filePath, contents: contents, attributes: nil)
+        if file_manager.createFile(atPath: filePath, contents: contents, attributes: nil) {
+            print("文件创建成功:\(filePath)");
+        } else {
+            print("文件创建失败:\(filePath)");
+        }
     }
     
     /// 获取文件列表

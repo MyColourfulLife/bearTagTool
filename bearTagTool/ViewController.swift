@@ -55,7 +55,8 @@ class ViewController: UIViewController {
 //        })
         
         
-        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "返回", style: .plain, target: nil, action: nil)
+
        
         
     }
@@ -109,6 +110,8 @@ class ViewController: UIViewController {
         
         //        事件处理
         takePhotoBtn.addTarget(self, action: #selector(takePhoto), for: .touchUpInside)
+        albumEntryBtn.addTarget(self, action: #selector(scanImage), for: .touchUpInside)
+
         
         
     }
@@ -177,6 +180,26 @@ class ViewController: UIViewController {
         
     }
     
+    
+    
+    func scanImage() {
+        
+        let collectionLayout = UICollectionViewFlowLayout()
+        
+        let space: CGFloat = 5
+        
+        let imgSize = (view.frame.width - 4 * space - 4 * space) / 3
+        
+        collectionLayout.itemSize = CGSize(width: imgSize, height: imgSize)
+        collectionLayout.minimumInteritemSpacing = space
+        collectionLayout.minimumLineSpacing = space * 2
+        collectionLayout.sectionInset = UIEdgeInsets(top: 2*space, left: 2*space, bottom: 0, right: 2*space)
+        
+        let scanViewCtr = ImageScanViewController(collectionViewLayout: collectionLayout)
+        navigationController?.pushViewController(scanViewCtr, animated: true)
+        
+        
+    }
     
     
     
