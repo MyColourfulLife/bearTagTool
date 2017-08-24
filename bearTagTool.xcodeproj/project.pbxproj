@@ -14,6 +14,7 @@
 		1192BE9A1F4C09B600C834F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1192BE991F4C09B600C834F8 /* Assets.xcassets */; };
 		1192BE9D1F4C09B600C834F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1192BE9B1F4C09B600C834F8 /* LaunchScreen.storyboard */; };
 		1192BEC51F4D5B1D00C834F8 /* DeviceInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1192BEC41F4D5B1D00C834F8 /* DeviceInfoManager.swift */; };
+		11A246DC1F4E688800671323 /* PhotoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A246DB1F4E688800671323 /* PhotoManager.swift */; };
 		18892D77AAB204D31A948E06 /* Pods_bearTagTool.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE8ACD54EAA0B580DDA4E3B3 /* Pods_bearTagTool.framework */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		1192BE9C1F4C09B600C834F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1192BE9E1F4C09B600C834F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1192BEC41F4D5B1D00C834F8 /* DeviceInfoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInfoManager.swift; sourceTree = "<group>"; };
+		11A246DB1F4E688800671323 /* PhotoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoManager.swift; sourceTree = "<group>"; };
 		12B06843C7AC2B2F6357D0C1 /* Pods-bearTagTool.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bearTagTool.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bearTagTool/Pods-bearTagTool.debug.xcconfig"; sourceTree = "<group>"; };
 		64CDE15EB4AAD079D80D08D5 /* Pods-bearTagTool.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bearTagTool.release.xcconfig"; path = "Pods/Target Support Files/Pods-bearTagTool/Pods-bearTagTool.release.xcconfig"; sourceTree = "<group>"; };
 		FE8ACD54EAA0B580DDA4E3B3 /* Pods_bearTagTool.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bearTagTool.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,6 +69,7 @@
 			children = (
 				1192BE8F1F4C09B600C834F8 /* AppDelegate.swift */,
 				1192BE911F4C09B600C834F8 /* ViewController.swift */,
+				11A246DB1F4E688800671323 /* PhotoManager.swift */,
 				1192BEC41F4D5B1D00C834F8 /* DeviceInfoManager.swift */,
 				1192BE931F4C09B600C834F8 /* Main.storyboard */,
 				1192BE991F4C09B600C834F8 /* Assets.xcassets */,
@@ -222,6 +225,7 @@
 				1192BE921F4C09B600C834F8 /* ViewController.swift in Sources */,
 				1192BEC51F4D5B1D00C834F8 /* DeviceInfoManager.swift in Sources */,
 				1192BE901F4C09B600C834F8 /* AppDelegate.swift in Sources */,
+				11A246DC1F4E688800671323 /* PhotoManager.swift in Sources */,
 				1192BE981F4C09B600C834F8 /* bearTagTool.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
