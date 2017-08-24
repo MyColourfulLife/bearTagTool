@@ -22,7 +22,10 @@ class ViewController: UIViewController {
     
     var controlView:        UIView!                         //容器视图
     
-   
+    static let uuid: String = UserDefaults.standard.string(forKey: UserDefaultKeys.DeviceInfo.uuid.rawValue)!
+    static let uuidlast4carater = uuid.substring(from: uuid.index(uuid.endIndex, offsetBy: -4))
+
+    
     
     
     
@@ -40,19 +43,20 @@ class ViewController: UIViewController {
         
         //        尝试创建相册
         
-        PhotoManager.defaultManager.createAlbum(authorError: { error in
-            
-                        let errorAlert = UIAlertController(title: "创建相册失败", message: "请在iPhone的\"设置-隐私-照片\"选项中，允许本程序访问您的照片", preferredStyle: .alert)
-                        self.present(errorAlert, animated: true, completion: nil)
-            
-                        errorAlert.addAction(UIAlertAction(title: "好的", style: .default, handler: { (UIAlertAction) in
-                            self.dismiss(animated: true, completion: nil)
-                        }))
-            
-        })
+//        PhotoManager.defaultManager.createAlbum(authorError: { error in
+//            
+//                        let errorAlert = UIAlertController(title: "创建相册失败", message: "请在iPhone的\"设置-隐私-照片\"选项中，允许本程序访问您的照片", preferredStyle: .alert)
+//                        self.present(errorAlert, animated: true, completion: nil)
+//            
+//                        errorAlert.addAction(UIAlertAction(title: "好的", style: .default, handler: { (UIAlertAction) in
+//                            self.dismiss(animated: true, completion: nil)
+//                        }))
+//            
+//        })
         
         
         
+       
         
     }
     
@@ -194,58 +198,117 @@ class ViewController: UIViewController {
             
             let jpegData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imgaeDataSampleBuffer)
             
+            
+            
             if let image = UIImage(data: jpegData!) {
                
-                //            保存相片到小熊相册
-
-                if PhotoManager.defaultManager.assetCollection == nil {
-                    PhotoManager.defaultManager.createAlbum(authorError: { error in
-                        
-                            let errorAlert = UIAlertController(title: "保存相片失败", message: "请在iPhone的\"设置-隐私-照片\"选项中，允许本程序访问您的照片", preferredStyle: .alert)
-                            self.present(errorAlert, animated: true, completion: nil)
-                        
-                            errorAlert.addAction(UIAlertAction(title: "好的", style: .default, handler: { (UIAlertAction) in
-                            self.dismiss(animated: true, completion: nil)
-                            }))
-
-                    })
-                } else {
-                    
-                    PhotoManager.defaultManager.savePhoto(image: image, authorError: {
-                        error in
-                        
-                        let errorAlert = UIAlertController(title: "保存相片失败", message: "请在iPhone的\"设置-隐私-照片\"选项中，允许本程序访问您的照片", preferredStyle: .alert)
-                        self.present(errorAlert, animated: true, completion: nil)
-                        
-                        errorAlert.addAction(UIAlertAction(title: "好的", style: .default, handler: { (UIAlertAction) in
-                            self.dismiss(animated: true, completion: nil)
-                        }))
-
-                        
-                    })
-                    
-                }
-
+//                保存到系统相册
+//                saveToAlbum(image: image)
+                
+//               压缩图片
+              let compressData = UIImageJPEGRepresentation(image, 0.6)
+//                写入沙盒
+//                设置图片名称 IDBEAR_20170812_0987_00001.jpeg
+                
+                //保存文件到沙盒
+                PhotoManager.defaultManager.createFile(at: PhotoManager.defaultManager.createFilePath(fileName: createImgName()), contents: compressData!)
+                
             }
+    }
+    
+        
+        /// 获取图片名列表
+        ///
+        /// - Returns: 数组，如无为空
+        func getImageNamesList()->Array<String>{
+            let imglist = PhotoManager.defaultManager.getImgList(path: PhotoManager.defaultManager.createImageSandBoxPath())
             
-            
-            
+            return imglist ?? []
         }
         
         
+        /// 创建图片名称
+        ///  IDBEAR_20170812_0987_00001.jpeg
+        /// - Returns: 图片名称
+        func createImgName()->String {
+            
+            var imgName: String = ""
+            
+            //1. 获取当前时间
+            let now = Date()
+            //2.创建时间格式
+            let dateFormatter =  DateFormatter()
+            dateFormatter.dateFormat = "yyyyMMdd"
+            //2. 获取格式化后的字符串
+            let nowFormatString = dateFormatter.string(from: now)
+            
+            //时间戳
+            let timeStamp = Int(now.timeIntervalSince1970)
+            
+            print("时间戳\(timeStamp)，拍照时间：\(nowFormatString)")
+            
+            //3. uuid后四位 uuidlast4carater
+            
+            
+            //4. 当前是第几张照片
+            // 读取数字
+            var imgIndex: Int = UserDefaults.standard.integer(forKey: "imgIndex")
+            imgIndex = imgIndex + 1
+            //同步到本地
+            UserDefaults.standard.set(imgIndex, forKey: "imgIndex")
+            
+            let imgIndexStr = String.init(format: "%05d", imgIndex)
+            
+            //5. 拼接图片名称
+            imgName = "IDBEAR_\(nowFormatString)_\(ViewController.uuidlast4carater)_\(imgIndexStr).jpeg"
+            
+            
+            print("图片名称：\(imgName)")
+            
+
+            return imgName
+        }
         
         
+     
+        /// 保存到系统相册
+        ///
+        /// - Parameter image: 图片
+        func saveToAlbum(image: UIImage) {
+            
+            if PhotoManager.defaultManager.assetCollection == nil {
+                PhotoManager.defaultManager.createAlbum(authorError: { error in
+                    
+                    let errorAlert = UIAlertController(title: "保存相片失败", message: "请在iPhone的\"设置-隐私-照片\"选项中，允许本程序访问您的照片", preferredStyle: .alert)
+                    self.present(errorAlert, animated: true, completion: nil)
+                    
+                    errorAlert.addAction(UIAlertAction(title: "好的", style: .default, handler: { (UIAlertAction) in
+                        self.dismiss(animated: true, completion: nil)
+                    }))
+                    
+                })
+            } else {
+                
+                PhotoManager.defaultManager.savePhoto(image: image, authorError: {
+                    error in
+                    
+                    let errorAlert = UIAlertController(title: "保存相片失败", message: "请在iPhone的\"设置-隐私-照片\"选项中，允许本程序访问您的照片", preferredStyle: .alert)
+                    self.present(errorAlert, animated: true, completion: nil)
+                    
+                    errorAlert.addAction(UIAlertAction(title: "好的", style: .default, handler: { (UIAlertAction) in
+                        self.dismiss(animated: true, completion: nil)
+                    }))
+                    
+                    
+                })
+                
+            }
+            
+        }
+        
+
         
     }
-    
-    
-//{
-//
-
-//    
-//    }
-    
-
     
 
     
@@ -274,13 +337,13 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.session.startRunning()
+//        self.session.startRunning()
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.session.stopRunning()
+//        self.session.stopRunning()
     }
     
 }

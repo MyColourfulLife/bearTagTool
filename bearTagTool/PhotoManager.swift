@@ -13,12 +13,139 @@ class PhotoManager: NSObject {
 
     var assetCollection:PHAssetCollection?
     
+    let imageCollectionName = "小熊图库"
+    
+    let file_manager = FileManager.default
+    
     
     static let defaultManager = PhotoManager()
     
     private override init() {
         super.init()
     }
+    
+    
+    /// 如果文件夹不存在，会自动创建
+    ///
+    /// - Returns: 文件存储路径
+    func createImageSandBoxPath()->String {
+        
+//        1. 获取沙盒路径
+        let documentPath:NSString! = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as NSString
+        let imageStoragePath = documentPath.appendingPathComponent(imageCollectionName)
+        
+        print(imageStoragePath)
+        
+//        2. 如果路径不存在 则创建
+        
+        var isDir : ObjCBool = false
+        if file_manager.fileExists(atPath: imageStoragePath, isDirectory:&isDir) {
+            if isDir.boolValue {
+                print("文件夹已经存在")
+                return imageStoragePath
+                
+            } else {
+                // 存在但不是个文件夹
+                try!  file_manager.createDirectory(atPath: imageStoragePath, withIntermediateDirectories: true, attributes: nil)
+            }
+        } else {
+            // 文件不存在
+             print("文件夹不存在，正在创建")
+          try!  file_manager.createDirectory(atPath: imageStoragePath, withIntermediateDirectories: true, attributes: nil)
+            
+        }
+        
+        return imageStoragePath
+        
+    }
+    
+    
+    func createFile(at filePath:String, contents:Data) {
+        file_manager.createFile(atPath: filePath, contents: contents, attributes: nil)
+    }
+    
+    /// 获取文件列表
+    ///
+    /// - Parameter path: 文件夹名
+    /// - Returns: 文件夹下所有的文件 如果只需要img类型的需要进一步判断
+    func getImgList(path:String) -> Array<String>? {
+        
+        return file_manager.subpaths(atPath:path)
+        
+    }
+    
+    
+    /// 根据文件名创建路径
+    ///
+    /// - Parameter fileName: 文件名
+    /// - Returns: 返回文件路名
+    func createFilePath(fileName:String) -> String {
+        let path = createImageSandBoxPath() as NSString
+        return path.appendingPathComponent(fileName) as String
+    }
+    
+    
+    /// 读取文件的内容
+    ///
+    /// - Parameter filePath: 文件路径
+    /// - Returns: 文件的二进制数据
+    func readFile(filePath:String) -> Data? {
+        var data: Data?
+        if file_manager.fileExists(atPath: filePath) {
+            data = file_manager.contents(atPath: filePath)
+        }
+        return data
+    }
+    
+    
+    /// 获取文件信息
+    ///
+    /// - Parameter filePath: 文件路径
+    /// - Returns: 返回字典，key是FileAttributeKey这些
+    func getFileInfo(filePath:String ) -> [FileAttributeKey : Any]? {
+        
+        let attributes:[FileAttributeKey : Any]?
+        
+        if file_manager.fileExists(atPath: filePath) {
+        attributes = try?  file_manager.attributesOfItem(atPath: filePath)
+            
+        print("属性:\(attributes!)")
+            
+//        attributes?[.creationDate]
+            
+            
+        }else {
+            attributes = nil
+            print("文件不存在")
+        }
+        
+        return attributes
+        
+    }
+    
+    
+    
+    /// 删除所有文件
+    func deleateAllFiles() {
+        
+            let documentPath:NSString! = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as NSString
+            let imageStoragePath = documentPath.appendingPathComponent(imageCollectionName)
+        
+            try! file_manager.removeItem(atPath: imageStoragePath)
+            
+            try! file_manager.createDirectory(atPath: imageStoragePath, withIntermediateDirectories: true, attributes: nil)
+    }
+
+    
+    
+    /// 删除单个文件
+    ///
+    /// - Parameter path: 文件路径
+    func deleateFile(path:String) {
+      try! file_manager.removeItem(atPath: path)
+    }
+    
+    
     
     /// 创建相册
     func createAlbum(authorError: (Bool)->Void) {
