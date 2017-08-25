@@ -22,8 +22,12 @@ class MarkView: UIView {
         leftBtn = UIButton(type: .custom)
         rightBtn = UIButton(type: .custom)
         
-        leftBtn.setTitle("向左", for: .normal)
-        rightBtn.setTitle("向右", for: .normal)
+//        leftBtn.setTitle("向左", for: .normal)
+//        rightBtn.setTitle("向右", for: .normal)
+        
+        leftBtn.setImage(#imageLiteral(resourceName: "left"), for: .normal)
+        rightBtn.setImage(#imageLiteral(resourceName: "right"), for: .normal)
+        
         
         super.init(frame: frame)
         addSubview(bigImageView)
@@ -37,7 +41,7 @@ class MarkView: UIView {
         leftBtn.snp.makeConstraints { (make) in
             make.centerY.equalTo(bigImageView)
             make.left.equalTo(10)
-            make.size.equalTo(CGSize(width: 50, height: 30))
+            make.size.equalTo(CGSize(width: 50, height: 50))
         }
         
         rightBtn.snp.makeConstraints { (make) in

@@ -83,7 +83,7 @@ class ImageScanViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //赋值
-        fillMarkViewWithIndex(index:imgIndex)
+        fillMarkViewWithIndex(index:indexPath.row)
         //动画出现
         
 
@@ -106,13 +106,8 @@ class ImageScanViewController: UICollectionViewController {
         collectionView.isScrollEnabled = false
         imgIndex = indexPath.row
         
-        if imgIndex == 0 {
-            markView.leftBtn.isHidden = true
-        } else if imgIndex == dataSource.count - 1 {
-            markView.rightBtn.isHidden = true
-        } else {
-            markView.rightBtn.isHidden = markView.leftBtn.isHidden == false
-        }
+        fillMarkViewWithIndex(index:imgIndex)
+        
     }
     
 
