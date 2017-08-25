@@ -41,7 +41,6 @@ class PhotoManager: NSObject {
         var isDir : ObjCBool = false
         if file_manager.fileExists(atPath: imageStoragePath, isDirectory:&isDir) {
             if isDir.boolValue {
-                print("文件夹已经存在")
                 return imageStoragePath
                 
             } else {
@@ -50,7 +49,6 @@ class PhotoManager: NSObject {
             }
         } else {
             // 文件不存在
-             print("文件夹不存在，正在创建")
           try!  file_manager.createDirectory(atPath: imageStoragePath, withIntermediateDirectories: true, attributes: nil)
             
         }

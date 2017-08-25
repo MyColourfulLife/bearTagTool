@@ -42,15 +42,6 @@ class ImageScanViewController: UICollectionViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     // MARK: UICollectionViewDataSource
 
@@ -82,11 +73,10 @@ class ImageScanViewController: UICollectionViewController {
     
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //赋值
-        fillMarkViewWithIndex(index:indexPath.row)
+        //检查
+        checkLeftAndRightIsNeedShow(index:indexPath.row)
         //动画出现
         
-
         // 让大图从小图的位置和大小开始出现
         let origin = CGPoint(x: collectionView.contentOffset.x, y: collectionView.contentOffset.y + 64)
         let originFram: CGRect = CGRect.init(origin: origin, size: markView.bigImageView.bounds.size);
@@ -120,6 +110,8 @@ class ImageScanViewController: UICollectionViewController {
         
         fillMarkViewWithIndex(index:imgIndex)
         
+        markView.clean()
+        
     }
     
     //向右
@@ -128,21 +120,32 @@ class ImageScanViewController: UICollectionViewController {
         
         checkLeftAndRightIsNeedShow(index: imgIndex)
         
+        
         fillMarkViewWithIndex(index:imgIndex)
+        
+        markView.clean()
     }
     
     
     func fillMarkViewWithIndex(index:Int) {
         let filePath = PhotoManager.defaultManager.createFilePath(fileName: dataSource[index])
-        markView.bigImageView.sd_setImage(with: URL(fileURLWithPath: filePath))
+        self.markView.bigImageView.sd_setImage(with: URL(fileURLWithPath: filePath))
+
+        self.markView.bigImageView.layer.removeAnimation(forKey: "fade")
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionFade
+        self.markView.bigImageView.layer.add(transition, forKey: "fade")
+        
     }
     
-    
+
     
     func checkLeftAndRightIsNeedShow(index:Int) {
-        if imgIndex == 0 {
+        if index == 0 {
             markView.leftBtn.isHidden = true
-        } else if imgIndex == dataSource.count - 1 {
+        } else if index == dataSource.count - 1 {
             markView.rightBtn.isHidden = true
         } else {
             markView.rightBtn.isHidden = false
@@ -151,37 +154,7 @@ class ImageScanViewController: UICollectionViewController {
 
     }
     
-    
-    // MARK: UICollectionViewDelegate
 
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
 
 }
 

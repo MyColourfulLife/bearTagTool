@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1101DD3B1F5008F300B43924 /* RectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1101DD3A1F5008F300B43924 /* RectView.swift */; };
 		1192BE901F4C09B600C834F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1192BE8F1F4C09B600C834F8 /* AppDelegate.swift */; };
 		1192BE921F4C09B600C834F8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1192BE911F4C09B600C834F8 /* ViewController.swift */; };
 		1192BE951F4C09B600C834F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1192BE931F4C09B600C834F8 /* Main.storyboard */; };
@@ -18,10 +19,12 @@
 		11A246E01F4EE76600671323 /* ImageScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A246DF1F4EE76600671323 /* ImageScanViewController.swift */; };
 		11A246E21F4EF3DB00671323 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A246E11F4EF3DB00671323 /* ImageCell.swift */; };
 		11A246E41F4F03C200671323 /* MarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A246E31F4F03C200671323 /* MarkView.swift */; };
+		11CE5DA71F4FCE68000E0232 /* MarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CE5DA61F4FCE68000E0232 /* MarkViewController.swift */; };
 		18892D77AAB204D31A948E06 /* Pods_bearTagTool.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE8ACD54EAA0B580DDA4E3B3 /* Pods_bearTagTool.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1101DD3A1F5008F300B43924 /* RectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectView.swift; sourceTree = "<group>"; };
 		1192BE8C1F4C09B600C834F8 /* bearTagTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bearTagTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1192BE8F1F4C09B600C834F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1192BE911F4C09B600C834F8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -35,6 +38,7 @@
 		11A246DF1F4EE76600671323 /* ImageScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageScanViewController.swift; sourceTree = "<group>"; };
 		11A246E11F4EF3DB00671323 /* ImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		11A246E31F4F03C200671323 /* MarkView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkView.swift; sourceTree = "<group>"; };
+		11CE5DA61F4FCE68000E0232 /* MarkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkViewController.swift; sourceTree = "<group>"; };
 		12B06843C7AC2B2F6357D0C1 /* Pods-bearTagTool.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bearTagTool.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bearTagTool/Pods-bearTagTool.debug.xcconfig"; sourceTree = "<group>"; };
 		64CDE15EB4AAD079D80D08D5 /* Pods-bearTagTool.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bearTagTool.release.xcconfig"; path = "Pods/Target Support Files/Pods-bearTagTool/Pods-bearTagTool.release.xcconfig"; sourceTree = "<group>"; };
 		FE8ACD54EAA0B580DDA4E3B3 /* Pods_bearTagTool.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bearTagTool.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +83,8 @@
 				11A246DF1F4EE76600671323 /* ImageScanViewController.swift */,
 				11A246E11F4EF3DB00671323 /* ImageCell.swift */,
 				11A246E31F4F03C200671323 /* MarkView.swift */,
+				11CE5DA61F4FCE68000E0232 /* MarkViewController.swift */,
+				1101DD3A1F5008F300B43924 /* RectView.swift */,
 				1192BEC41F4D5B1D00C834F8 /* DeviceInfoManager.swift */,
 				1192BE931F4C09B600C834F8 /* Main.storyboard */,
 				1192BE991F4C09B600C834F8 /* Assets.xcassets */,
@@ -231,6 +237,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1101DD3B1F5008F300B43924 /* RectView.swift in Sources */,
+				11CE5DA71F4FCE68000E0232 /* MarkViewController.swift in Sources */,
 				1192BE921F4C09B600C834F8 /* ViewController.swift in Sources */,
 				1192BEC51F4D5B1D00C834F8 /* DeviceInfoManager.swift in Sources */,
 				1192BE901F4C09B600C834F8 /* AppDelegate.swift in Sources */,

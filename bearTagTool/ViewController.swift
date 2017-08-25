@@ -205,7 +205,7 @@ class ViewController: UIViewController {
     
     func takePhoto() {
         
-        self.shutterAnimation()
+//        self.shutterAnimation()
         
         let stillimageConnect: AVCaptureConnection = self.stillImageOutput.connection(withMediaType: AVMediaTypeVideo)
         
@@ -234,7 +234,16 @@ class ViewController: UIViewController {
 //                设置图片名称 IDBEAR_20170812_0987_00001.jpeg
                 
                 //保存文件到沙盒
-                PhotoManager.defaultManager.createFile(at: PhotoManager.defaultManager.createFilePath(fileName: createImgName()), contents: compressData!)
+                let filePath = PhotoManager.defaultManager.createFilePath(fileName: createImgName())
+                PhotoManager.defaultManager.createFile(at: filePath, contents: compressData!)
+                
+                
+                //如果开启了标注就弹出标注页面
+               let markViewCtr = MarkViewController(imagePath: filePath)
+                
+               self.navigationController?.present(markViewCtr, animated: true, completion: nil)
+                
+                
                 
             }
     }
