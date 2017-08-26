@@ -34,7 +34,7 @@ class PhotoManager: NSObject {
         let documentPath:NSString! = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as NSString
         let imageStoragePath = documentPath.appendingPathComponent(imageCollectionName)
         
-        print(imageStoragePath)
+//        print(imageStoragePath)
         
 //        2. 如果路径不存在 则创建
         
@@ -60,9 +60,9 @@ class PhotoManager: NSObject {
     
     func createFile(at filePath:String, contents:Data) {
         if file_manager.createFile(atPath: filePath, contents: contents, attributes: nil) {
-            print("文件创建成功:\(filePath)");
+//            print("文件创建成功:\(filePath)");
         } else {
-            print("文件创建失败:\(filePath)");
+//            print("文件创建失败:\(filePath)");
         }
     }
     
@@ -111,14 +111,14 @@ class PhotoManager: NSObject {
         if file_manager.fileExists(atPath: filePath) {
         attributes = try?  file_manager.attributesOfItem(atPath: filePath)
             
-        print("属性:\(attributes!)")
+//        print("属性:\(attributes!)")
             
 //        attributes?[.creationDate]
             
             
         }else {
             attributes = nil
-            print("文件不存在")
+//            print("文件不存在")
         }
         
         return attributes
@@ -185,7 +185,7 @@ class PhotoManager: NSObject {
             }, completionHandler: { (success, error) in
                 
                 if success == false {
-                    print("Error creating album: \(String(describing: error))")
+//                    print("Error creating album: \(String(describing: error))")
                 } else {
                     
                     //  创建成功，获取PHAssetColleciton
@@ -240,9 +240,9 @@ class PhotoManager: NSObject {
             }, completionHandler: { (success, error) in
                 
                 if !success {
-                    print("保存失败")
+//                    print("保存失败")
                 }else{
-                    print("保存成功")
+//                    print("保存成功")
                 }
                 
             })

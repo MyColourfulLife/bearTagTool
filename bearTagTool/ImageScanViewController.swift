@@ -227,7 +227,7 @@ class ImageScanViewController: UICollectionViewController {
                 markView.lastFrame = rectFrame
                 markView.rectView?.panGestureEndedClosure = {
                     self.markView.lastFrame = self.markView.rectView?.frame
-                    print("移动后\(self.markView.lastFrame!)")
+//                    print("移动后\(self.markView.lastFrame!)")
                 }
                 // 还原 清除 和 修改
                 markView.doneBtn.setTitle("修改", for: .normal)

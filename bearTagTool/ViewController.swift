@@ -335,7 +335,7 @@ class ViewController: UIViewController {
             //时间戳
             let timeStamp = Int(now.timeIntervalSince1970)
             
-            print("时间戳\(timeStamp)，拍照时间：\(nowFormatString)")
+//            print("时间戳\(timeStamp)，拍照时间：\(nowFormatString)")
             
             //3. uuid后四位 uuidlast4carater
             
@@ -353,7 +353,7 @@ class ViewController: UIViewController {
             imgName = "IDBEAR_\(nowFormatString)_\(ViewController.uuidlast4carater)_\(imgIndexStr).jpeg"
             
             
-            print("图片名称：\(imgName)")
+//            print("图片名称：\(imgName)")
             
             return (imgName, timeStamp)
         }

@@ -177,7 +177,7 @@ class MarkView: UIView {
         //获取开始点位置
         
         startPoint =  touchPoint.location(in: self)
-        print("startPoint:\(startPoint)")
+//        print("startPoint:\(startPoint)")
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -192,7 +192,7 @@ class MarkView: UIView {
         }
         endPoint = movePoint.location(in: self)
         
-        print("endPoint:\(endPoint)")
+//        print("endPoint:\(endPoint)")
         
         //画一个矩形添加到layer上
         let width = abs(endPoint.x - startPoint.x)
@@ -210,7 +210,7 @@ class MarkView: UIView {
         
         rectView?.panGestureEndedClosure = {
             self.lastFrame = self.rectView?.frame
-            print("移动后\(self.lastFrame!)")
+//            print("移动后\(self.lastFrame!)")
         }
         
         doneBtn.setTitle("完成", for: .normal)

@@ -37,14 +37,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             //            模型信息 手机版本 uuid
             let userDefalut = UserDefaults.standard
-            let modelName = userDefalut.string(forKey: UserDefaultKeys.DeviceInfo.modelName.rawValue)
-            let systemVersion = userDefalut.string(forKey: UserDefaultKeys.DeviceInfo.sysVersion.rawValue)
+//            let modelName = userDefalut.string(forKey: UserDefaultKeys.DeviceInfo.modelName.rawValue)
+//            let systemVersion = userDefalut.string(forKey: UserDefaultKeys.DeviceInfo.sysVersion.rawValue)
             let uuidString = userDefalut.string(forKey: UserDefaultKeys.DeviceInfo.uuid.rawValue)
-            
-            print(modelName!)
-            print(systemVersion!)
-            print(uuidString!)
-            
+        
             RealmManager.username = uuidString!
         }
 

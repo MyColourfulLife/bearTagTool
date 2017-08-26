@@ -141,7 +141,7 @@ class MarkViewController: UIViewController {
         }
         //获取开始点位置
         startPoint =  touchPoint.location(in: showImage)
-        print("startPoint:\(startPoint)")
+//        print("startPoint:\(startPoint)")
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -156,7 +156,7 @@ class MarkViewController: UIViewController {
         }
         endPoint = movePoint.location(in: showImage)
         
-        print("endPoint:\(endPoint)")
+//        print("endPoint:\(endPoint)")
         
         //画一个矩形添加到layer上
         let width = abs(endPoint.x - startPoint.x)
@@ -174,7 +174,7 @@ class MarkViewController: UIViewController {
         
         rectView?.panGestureEndedClosure = {
             self.lastFrame = self.rectView?.frame
-            print("移动后\(self.lastFrame!)")
+//            print("移动后\(self.lastFrame!)")
         }
         
          cleanBtn.isHidden = false
