@@ -8,6 +8,7 @@
 
 import UIKit
 import SDWebImage
+import MBProgressHUD
 
 private let reuseIdentifier = "Cell"
 
@@ -35,6 +36,10 @@ class ImageScanViewController: UICollectionViewController {
         collectionView?.backgroundColor = UIColor.white
         title = "图片采集库"
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareClick))
+            
+//            UIBarButtonItem(title: "分享", style: .done, target: self, action: #selector(shareClick))
+        
         markView = MarkView(frame: CGRect(x: 0, y: 64, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 40))
         collectionView?.addSubview(markView)
         markView.alpha = 0
@@ -44,7 +49,35 @@ class ImageScanViewController: UICollectionViewController {
         imgIndex = 0
     }
     
+    
+    /// 分享按钮
+    func shareClick() {
+        let databaseToShare = RealmManager.realmManager.realm.configuration.fileURL!
+        var items = [databaseToShare]
+        //imgToShare
+        if dataSource.count > 0 {
+            for imgName in dataSource {
+                let imgPath = PhotoManager.defaultManager.createFilePath(fileName: imgName)
+                items.append(URL(fileURLWithPath: imgPath))
+            }
+        }
+        
+        
+        let activityVC = UIActivityViewController(
+            activityItems: items,
+            applicationActivities: nil)
+        activityVC.completionWithItemsHandler =  { activity, success, items, error in
+   
+            
+            
+        }
+    
 
+        self.present(activityVC, animated: true, completion: { () -> Void in
+            
+        })
+    }
+    
 
     // MARK: UICollectionViewDataSource
 
