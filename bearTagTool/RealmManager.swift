@@ -15,12 +15,11 @@ class RealmManager: NSObject {
     /// realm 数据库的名称
     
     var username = "default"
-    let realm: Realm!
+    var realm: Realm!
     
     static let realmManager = RealmManager()
     
     private override init() {
-        realm = try! Realm()
         super.init()
  }
     
@@ -36,6 +35,8 @@ class RealmManager: NSObject {
             // 将这个配置应用到默认的 Realm 数据库当中
             Realm.Configuration.defaultConfiguration = config
         
+        
+          realm =  try! Realm(configuration: config)
         
          print("数据库地址：\(realm.configuration.fileURL!)")
         
