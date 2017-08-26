@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4EF39D29B185411DC8E1545B40EE8961"
+               BlueprintIdentifier = "7E80DD169B0ABC4BE1341E296F7F54CA"
                BuildableName = "Pods_bearTagTool.framework"
                BlueprintName = "Pods-bearTagTool"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4EF39D29B185411DC8E1545B40EE8961"
+            BlueprintIdentifier = "7E80DD169B0ABC4BE1341E296F7F54CA"
             BuildableName = "Pods_bearTagTool.framework"
             BlueprintName = "Pods-bearTagTool"
             ReferencedContainer = "container:Pods.xcodeproj">

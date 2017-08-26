@@ -21,6 +21,9 @@ class ImageScanViewController: UICollectionViewController {
     
     var imgIndex:Int!
     
+    
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,6 +101,8 @@ class ImageScanViewController: UICollectionViewController {
         
         fillMarkViewWithIndex(index:imgIndex)
         
+         drawRectUp(imgname: dataSource[imgIndex])
+        
     }
     
 
@@ -112,6 +117,9 @@ class ImageScanViewController: UICollectionViewController {
         
         markView.clean()
         
+        drawRectUp(imgname: dataSource[imgIndex])
+        
+        
     }
     
     //向右
@@ -124,6 +132,23 @@ class ImageScanViewController: UICollectionViewController {
         fillMarkViewWithIndex(index:imgIndex)
         
         markView.clean()
+        
+        drawRectUp(imgname: dataSource[imgIndex])
+    }
+    
+    
+    func drawRectUp(imgname:String) {
+        markView.rectView?.removeFromSuperview()
+        markView.rectView = nil
+        //更新frame
+        let fiter: NSPredicate = NSPredicate(format: "fileName == %@", imgname)
+        if let item =  RealmManager.realmManager.realm.objects(PhotoItem.self).filter(fiter).first{
+            if let frame = item.frame {
+                let rectFrame = CGRect(x: frame.x, y: frame.y - 64, width: frame.width, height: frame.height)
+                markView.rectView = RectView(frame:rectFrame)
+                markView.addSubview(markView.rectView!)
+            }
+        }
     }
     
     
