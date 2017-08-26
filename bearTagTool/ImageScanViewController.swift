@@ -23,8 +23,7 @@ class ImageScanViewController: UICollectionViewController {
     var imgIndex:Int!
     
     
-    
-    
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,8 +36,6 @@ class ImageScanViewController: UICollectionViewController {
         title = "图片采集库"
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareClick))
-            
-//            UIBarButtonItem(title: "分享", style: .done, target: self, action: #selector(shareClick))
         
         markView = MarkView(frame: CGRect(x: 0, y: 64, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 40))
         collectionView?.addSubview(markView)
@@ -47,7 +44,50 @@ class ImageScanViewController: UICollectionViewController {
         markView.leftBtn.addTarget(self, action: #selector(clickLeft(leftBtn:)), for: .touchUpInside)
         markView.rightBtn.addTarget(self, action: #selector(clickRight(rightBtn:)), for: .touchUpInside)
         imgIndex = 0
+        
+        //点击了完成按钮
+        markView.doneClickBlock = {
+            //保存记录
+            //保存标注信息
+            let frame = FramePostion(value: [self.markView.lastFrame!.origin.x,self.markView.lastFrame!.origin.y,self.markView.lastFrame!.size.width,self.markView.lastFrame!.size.height])
+            //更新frame
+            let fiter: NSPredicate = NSPredicate(format: "fileName == %@", self.dataSource[self.imgIndex])
+            if let item =  RealmManager.realmManager.realm.objects(PhotoItem.self).filter(fiter).first{
+                RealmManager.realmManager.doWriteHandler {
+                    item.frame = frame
+                }
+            }
+            //提示保存成功
+            let hub = MBProgressHUD.showAdded(to: self.markView, animated: true)
+            hub.label.text = "保存成功"
+            hub.mode = .text
+            hub.removeFromSuperViewOnHide = true
+            hub.hide(animated: true, afterDelay: 0.5)
+            
+            //更改图标状态
+            self.markView.cancelBtn.setTitle("还原", for: .normal)
+            self.markView.doneBtn.setTitle("修改", for: .normal)
+            self.markView.cancelBtn.isHidden = false
+            
+            
+            
+            
+        }
+        
+        //点击了还原按钮
+        markView.goBackClick = {
+            
+            // 1. 清除标注信息
+            self.markView.clean()
+            // 2. 重写读取数据绘图
+            self.drawRectUp(imgname: self.dataSource[self.imgIndex])
+            
+        }
+        
     }
+    
+    
+    
     
     
     /// 分享按钮
@@ -134,7 +174,7 @@ class ImageScanViewController: UICollectionViewController {
         
         fillMarkViewWithIndex(index:imgIndex)
         
-         drawRectUp(imgname: dataSource[imgIndex])
+        drawRectUp(imgname: dataSource[imgIndex])
         
     }
     
@@ -161,7 +201,6 @@ class ImageScanViewController: UICollectionViewController {
         
         checkLeftAndRightIsNeedShow(index: imgIndex)
         
-        
         fillMarkViewWithIndex(index:imgIndex)
         
         markView.clean()
@@ -170,6 +209,10 @@ class ImageScanViewController: UICollectionViewController {
     }
     
     
+    
+    /// 更新绘图
+    ///
+    /// - Parameter imgname: 图片名称
     func drawRectUp(imgname:String) {
         markView.rectView?.removeFromSuperview()
         markView.rectView = nil
@@ -177,14 +220,32 @@ class ImageScanViewController: UICollectionViewController {
         let fiter: NSPredicate = NSPredicate(format: "fileName == %@", imgname)
         if let item =  RealmManager.realmManager.realm.objects(PhotoItem.self).filter(fiter).first{
             if let frame = item.frame {
-                let rectFrame = CGRect(x: frame.x, y: frame.y - 64, width: frame.width, height: frame.height)
+                let rectFrame = CGRect(x: frame.x, y: frame.y, width: frame.width, height: frame.height)
                 markView.rectView = RectView(frame:rectFrame)
                 markView.addSubview(markView.rectView!)
+                markView.insertSubview(markView.rectView!, belowSubview: markView.doneBtn)
+                markView.lastFrame = rectFrame
+                markView.rectView?.panGestureEndedClosure = {
+                    self.markView.lastFrame = self.markView.rectView?.frame
+                    print("移动后\(self.markView.lastFrame!)")
+                }
+                // 还原 清除 和 修改
+                markView.doneBtn.setTitle("修改", for: .normal)
+                markView.doneBtn.isHidden = false
+                markView.cleanBtn.isHidden = false
+                markView.cancelBtn.isHidden = false
+            } else {
+                markView.doneBtn.isHidden = true
+                markView.cleanBtn.isHidden = true
+                markView.cancelBtn.isHidden = true
             }
         }
     }
     
     
+    /// 填充图片信息
+    ///
+    /// - Parameter index: 第几张图
     func fillMarkViewWithIndex(index:Int) {
         let filePath = PhotoManager.defaultManager.createFilePath(fileName: dataSource[index])
         self.markView.bigImageView.sd_setImage(with: URL(fileURLWithPath: filePath))
@@ -200,6 +261,9 @@ class ImageScanViewController: UICollectionViewController {
     
 
     
+    /// 判断是否显示左右箭头
+    ///
+    /// - Parameter index: 所处位置
     func checkLeftAndRightIsNeedShow(index:Int) {
         if index == 0 {
             markView.leftBtn.isHidden = true

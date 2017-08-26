@@ -81,11 +81,12 @@ class MarkViewController: UIViewController {
         
         showImage = UIImageView()
         view.addSubview(showImage)
+        showImage.isUserInteractionEnabled = true
         showImage.snp.makeConstraints { (make) in
             make.bottom.left.right.equalToSuperview()
             make.top.equalTo(64)
         }
-
+        
         // 左边返回按钮  右边确定按钮
         
         cancelBtn = UIButton(type: .roundedRect)
@@ -103,7 +104,8 @@ class MarkViewController: UIViewController {
         doneBtn.layer.masksToBounds = true
         cleanBtn.layer.cornerRadius = 5
         cleanBtn.layer.masksToBounds = true
-        cleanBtn.isHidden = (rectView == nil)
+        cleanBtn.isHidden = true
+        doneBtn.isHidden = true
         
         view.addSubview(cancelBtn)
         view.addSubview(doneBtn)
@@ -138,7 +140,7 @@ class MarkViewController: UIViewController {
             return
         }
         //获取开始点位置
-        startPoint =  touchPoint.location(in: self.view)
+        startPoint =  touchPoint.location(in: showImage)
         print("startPoint:\(startPoint)")
     }
     
@@ -152,7 +154,7 @@ class MarkViewController: UIViewController {
         guard let movePoint = touches.first else {
             return
         }
-        endPoint = movePoint.location(in: self.view)
+        endPoint = movePoint.location(in: showImage)
         
         print("endPoint:\(endPoint)")
         
@@ -167,7 +169,7 @@ class MarkViewController: UIViewController {
         
         let frame = CGRect(origin: originPoint, size: CGSize(width: width, height: height))
         rectView = RectView(frame:frame)
-        view.addSubview(rectView!)
+        showImage.addSubview(rectView!)
         lastFrame = rectView?.frame
         
         rectView?.panGestureEndedClosure = {
@@ -175,7 +177,8 @@ class MarkViewController: UIViewController {
             print("移动后\(self.lastFrame!)")
         }
         
-         cleanBtn.isHidden = (rectView == nil)
+         cleanBtn.isHidden = false
+         doneBtn.isHidden  = false
     }
 
 
@@ -219,7 +222,8 @@ class MarkViewController: UIViewController {
     func clean() {
         rectView?.removeFromSuperview()
         rectView = nil
-        cleanBtn.isHidden = (rectView == nil)
+        cleanBtn.isHidden = true
+        doneBtn.isHidden = true
     }
     
     

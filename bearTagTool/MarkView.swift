@@ -21,6 +21,12 @@ class MarkView: UIView {
     var doneBtn:UIButton!
     var cleanBtn:UIButton!
     
+    var lastFrame: CGRect?
+    
+    typealias GoBackClickBlock = ()->()
+    var goBackClick: GoBackClickBlock?
+    typealias DoneClickBlock = ()->()
+    var doneClickBlock: DoneClickBlock?
     
     override init(frame: CGRect) {
         
@@ -77,8 +83,8 @@ class MarkView: UIView {
         cancelBtn = UIButton(type: .roundedRect)
         doneBtn = UIButton(type: .roundedRect)
         cleanBtn = UIButton(type: .roundedRect)
-        cancelBtn.setTitle("返回", for: .normal)
-        doneBtn.setTitle("完成", for: .normal)
+        cancelBtn.setTitle("还原", for: .normal)
+        doneBtn.setTitle("修改", for: .normal)
         cleanBtn.setTitle("清除", for: .normal)
         cancelBtn.backgroundColor = UIColor.black
         doneBtn.backgroundColor = UIColor.black
@@ -89,7 +95,7 @@ class MarkView: UIView {
         doneBtn.layer.masksToBounds = true
         cleanBtn.layer.cornerRadius = 5
         cleanBtn.layer.masksToBounds = true
-        cleanBtn.isHidden = (rectView == nil)
+        
         
         addSubview(cancelBtn)
         addSubview(doneBtn)
@@ -113,35 +119,53 @@ class MarkView: UIView {
             make.size.equalTo(CGSize(width: 50, height: 50))
         }
 
-        cancelBtn.addTarget(self, action: #selector(cancelClick), for: .touchUpInside)
+        cancelBtn.addTarget(self, action: #selector(clickGoBack), for: .touchUpInside)
         doneBtn.addTarget(self, action: #selector(doneClick), for: .touchUpInside)
         cleanBtn.addTarget(self, action: #selector(clean), for: .touchUpInside)
         
         cancelBtn.isHidden = true
+        doneBtn.isHidden = true
+        cleanBtn.isHidden = true
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+
+    
+    
     // MARK: - 事件处理
     
     
-    /// 点击了返回按钮
-    func cancelClick() {
-       
+    /// 点击了还原按钮
+    
+    
+//    makeConstraints(_ closure: (_ make: ConstraintMaker) -> Void)
+    
+    func clickGoBack() {
+        if goBackClick != nil {
+            goBackClick!()
+            
+            
+        }
     }
+    
     
     /// 点击了完成按钮
     func doneClick() {
-       
+        if doneClickBlock != nil {
+            doneClickBlock!()
+            
+        }
     }
     
     func clean() {
         rectView?.removeFromSuperview()
         rectView = nil
-        cleanBtn.isHidden = (rectView == nil)
-        doneBtn.isHidden = cleanBtn.isHidden
+        cleanBtn.isHidden = true
+        doneBtn.isHidden = true
     }
     
     // MARK: 画框
@@ -182,11 +206,23 @@ class MarkView: UIView {
         let frame = CGRect(origin: originPoint, size: CGSize(width: width, height: height))
         rectView = RectView(frame:frame)
         addSubview(rectView!)
+        lastFrame = rectView?.frame
         
-        cleanBtn.isHidden = (rectView == nil)
-        doneBtn.isHidden = cleanBtn.isHidden
+        rectView?.panGestureEndedClosure = {
+            self.lastFrame = self.rectView?.frame
+            print("移动后\(self.lastFrame!)")
+        }
+        
+        doneBtn.setTitle("完成", for: .normal)
+        cleanBtn.isHidden = false
+        doneBtn.isHidden = false
+        cancelBtn.isHidden = true
+        
+        
+        
     }
     
+   
     
 
     
