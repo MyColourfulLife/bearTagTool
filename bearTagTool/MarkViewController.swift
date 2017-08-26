@@ -17,11 +17,19 @@ class MarkViewController: UIViewController {
     
     
     var imgPath:String!
+    var imgName:String!
+    
     
     
     var startPoint:CGPoint = CGPoint.zero
     var endPoint:CGPoint = CGPoint.zero
     var rectView:RectView?
+    
+    var lastFrame: CGRect?
+    
+    
+
+ 
     
     
     init(imagePath:String) {
@@ -160,6 +168,12 @@ class MarkViewController: UIViewController {
         let frame = CGRect(origin: originPoint, size: CGSize(width: width, height: height))
         rectView = RectView(frame:frame)
         view.addSubview(rectView!)
+        lastFrame = rectView?.frame
+        
+        rectView?.panGestureEndedClosure = {
+            self.lastFrame = self.rectView?.frame
+            print("移动后\(self.lastFrame!)")
+        }
         
          cleanBtn.isHidden = (rectView == nil)
     }
@@ -168,17 +182,36 @@ class MarkViewController: UIViewController {
     // MARK: - 事件处理
     
     
-    /// 点击了返回按钮
+    /// 点击了返回按钮 文件不保存
     func cancelClick() {
-        dismiss(animated: true) { 
+        //删除文件
+        PhotoManager.defaultManager.deleateFile(path: imgPath)
+        //从数据库中移除
+        let fiter: NSPredicate = NSPredicate(format: "fileName == %@", imgName)
+        
+        if let item =  RealmManager.realmManager.realm.objects(PhotoItem.self).filter(fiter).first{
+            RealmManager.realmManager.delete(item)
+        }
+
+        
+        dismiss(animated: true) {
             
         }
     }
     
     /// 点击了完成按钮
     func doneClick() {
+        //保存标注信息
+       let frame = FramePostion(value: [lastFrame!.origin.x,lastFrame!.origin.y,lastFrame!.size.width,lastFrame!.size.height])
+        //更新frame
+        let fiter: NSPredicate = NSPredicate(format: "fileName == %@", imgName)
+        if let item =  RealmManager.realmManager.realm.objects(PhotoItem.self).filter(fiter).first{
+            RealmManager.realmManager.doWriteHandler {
+            item.frame = frame
+            }
+        }
+        
         dismiss(animated: true) {
-            
         }
     }
     

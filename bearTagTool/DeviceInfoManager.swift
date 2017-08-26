@@ -9,6 +9,8 @@
 import UIKit
 
 class DeviceInfoManager: NSObject {
+    
+    static var deviceType: String?
 
     /// 获取设备信息
     ///
@@ -36,6 +38,7 @@ class DeviceInfoManager: NSObject {
         deviceInfo["uuid"] = uuid
         deviceInfo["modelName"] = modelName
         
+        DeviceInfoManager.deviceType = modelName
         
         //        本地化存储
         let userDefult = UserDefaults.standard
@@ -45,6 +48,12 @@ class DeviceInfoManager: NSObject {
         
         
         //        return deviceInfo;
+        
+        //创建数据库
+        RealmManager.realmManager.username = uuid!
+        RealmManager.realmManager.setDefaultRealmForUser(username: uuid!)
+
+       
         
     }
     

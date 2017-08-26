@@ -24,10 +24,10 @@ class ViewController: UIViewController {
     
     static let uuid: String = UserDefaults.standard.string(forKey: UserDefaultKeys.DeviceInfo.uuid.rawValue)!
     static let uuidlast4carater = uuid.substring(from: uuid.index(uuid.endIndex, offsetBy: -4))
-
+  
+    let deviceType: String? = UserDefaults.standard.string(forKey: UserDefaultKeys.DeviceInfo.modelName.rawValue)
     
-    
-    
+    let tagSwitch = UISwitch()
     
     
     override func viewDidLoad() {
@@ -86,8 +86,19 @@ class ViewController: UIViewController {
         
         
         //      手动开关
-        let tagSwitch = UISwitch()
-        tagSwitch.isOn = true
+        let tag = UserDefaults.standard.integer(forKey: "tagSwitchStatus")
+        
+        if (tag == 0) {
+            tagSwitch.isOn = true
+            UserDefaults.standard.set(1, forKey: "tagSwitchStatus")
+        } else if (tag == 1){
+            tagSwitch.isOn = true
+        } else {
+            tagSwitch.isOn = false
+        }
+        
+        
+        tagSwitch.addTarget(self, action: #selector(tagSwitchChange(sender:)), for: .valueChanged)
         controlView.addSubview(tagSwitch)
         
         tagSwitch.snp.makeConstraints { (make) in
@@ -115,6 +126,19 @@ class ViewController: UIViewController {
         
         
     }
+    
+    
+    func tagSwitchChange(sender: UISwitch) {
+        
+        if sender.isOn == false {
+            UserDefaults.standard.set(3, forKey: "tagSwitchStatus")
+        } else {
+             UserDefaults.standard.set(1, forKey: "tagSwitchStatus")
+        }
+        
+        
+    }
+
     
     
     func initAVCaputerSeesion() {
@@ -225,24 +249,45 @@ class ViewController: UIViewController {
             
             if let image = UIImage(data: jpegData!) {
                
+                let size = image.size
 //                保存到系统相册
 //                saveToAlbum(image: image)
                 
 //               压缩图片
-              let compressData = UIImageJPEGRepresentation(image, 0.6)
+              let compressData = UIImageJPEGRepresentation(image, 0.5)
 //                写入沙盒
 //                设置图片名称 IDBEAR_20170812_0987_00001.jpeg
                 
                 //保存文件到沙盒
-                let filePath = PhotoManager.defaultManager.createFilePath(fileName: createImgName())
+                let (fileName,timeStamp) = createImgName()
+                
+
+                let filePath = PhotoManager.defaultManager.createFilePath(fileName: fileName)
                 PhotoManager.defaultManager.createFile(at: filePath, contents: compressData!)
                 
                 
-                //如果开启了标注就弹出标注页面
-               let markViewCtr = MarkViewController(imagePath: filePath)
+                //保存到数据库
+                let photoItem = PhotoItem()
+                photoItem.deviceType = self.deviceType ?? DeviceInfoManager.deviceType!
+                photoItem.fileName = fileName
+                photoItem.fileSize = (compressData?.count)!
+                photoItem.fileWidth = Double(size.width)
+                photoItem.fileHeight = Double(size.height)
+                photoItem.createDate = timeStamp
+                photoItem.filePath =  filePath
                 
-               self.navigationController?.present(markViewCtr, animated: true, completion: nil)
+                RealmManager.realmManager.doWriteHandler {
+                    RealmManager.realmManager.realm.add(photoItem)
+                }
                 
+                if self.tagSwitch.isOn == true {
+                    
+                    //如果开启了标注就弹出标注页面
+                    let markViewCtr = MarkViewController(imagePath: filePath)
+                    markViewCtr.imgName = fileName
+                    self.navigationController?.present(markViewCtr, animated: true, completion: nil)
+
+                }
                 
                 
             }
@@ -262,7 +307,7 @@ class ViewController: UIViewController {
         /// 创建图片名称
         ///  IDBEAR_20170812_0987_00001.jpeg
         /// - Returns: 图片名称
-        func createImgName()->String {
+        func createImgName()->(String,Int) {
             
             var imgName: String = ""
             
@@ -297,8 +342,7 @@ class ViewController: UIViewController {
             
             print("图片名称：\(imgName)")
             
-
-            return imgName
+            return (imgName, timeStamp)
         }
         
         
@@ -369,13 +413,13 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-//        self.session.startRunning()
+        self.session.startRunning()
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-//        self.session.stopRunning()
+        self.session.stopRunning()
     }
     
 }
