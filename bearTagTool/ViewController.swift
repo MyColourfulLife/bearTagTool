@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import AVFoundation
+import MBProgressHUD
 
 
 
@@ -28,6 +29,8 @@ class ViewController: UIViewController {
     let deviceType: String? = UserDefaults.standard.string(forKey: UserDefaultKeys.DeviceInfo.modelName.rawValue)
     
     let tagSwitch = UISwitch()
+    
+    var hub: MBProgressHUD! = nil
     
     
     override func viewDidLoad() {
@@ -58,6 +61,8 @@ class ViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "返回", style: .plain, target: nil, action: nil)
 
        
+
+        
         
     }
     
@@ -83,20 +88,28 @@ class ViewController: UIViewController {
         }
         
         albumEntryBtn.setImage(#imageLiteral(resourceName: "imgEntry"), for: .normal)
-        
+      
         
         //      手动开关
         let tag = UserDefaults.standard.integer(forKey: "tagSwitchStatus")
-        
+        hub = MBProgressHUD.showAdded(to: view, animated: true)
+        hub.mode = .text
+        hub.removeFromSuperViewOnHide = true
         if (tag == 0) {
             tagSwitch.isOn = true
             UserDefaults.standard.set(1, forKey: "tagSwitchStatus")
+            hub.label.text = "当前状态处于手动标注状态"
+            hub.hide(animated: true, afterDelay: 3)
         } else if (tag == 1){
             tagSwitch.isOn = true
+            hub.label.text = "当前状态处于手动标注状态"
+            hub.hide(animated: true, afterDelay: 3)
         } else {
             tagSwitch.isOn = false
+            hub.label.text = "当前状态处于非手动标注状态"
+            hub.hide(animated: true, afterDelay: 3)
         }
-        
+       
         
         tagSwitch.addTarget(self, action: #selector(tagSwitchChange(sender:)), for: .valueChanged)
         controlView.addSubview(tagSwitch)

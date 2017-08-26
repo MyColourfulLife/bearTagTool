@@ -50,9 +50,7 @@ class DeviceInfoManager: NSObject {
         //        return deviceInfo;
         
         //创建数据库
-        RealmManager.realmManager.username = uuid!
-        RealmManager.realmManager.setDefaultRealmForUser(username: uuid!)
-
+        RealmManager.username = uuid!
        
         
     }

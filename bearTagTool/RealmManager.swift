@@ -14,13 +14,17 @@ class RealmManager: NSObject {
     
     /// realm 数据库的名称
     
-    var username = "default"
+    static var username = "default"
     var realm: Realm!
     
-    static let realmManager = RealmManager()
+    static let realmManager = RealmManager(name: username)
     
-    private override init() {
+    private init(name:String) {
+//        realm =  try! Realm()
+
         super.init()
+        
+        setDefaultRealmForUser(username: name)
  }
     
     
@@ -33,10 +37,10 @@ class RealmManager: NSObject {
                 .appendingPathComponent("\(username).realm")
 
             // 将这个配置应用到默认的 Realm 数据库当中
+        
             Realm.Configuration.defaultConfiguration = config
         
-        
-          realm =  try! Realm(configuration: config)
+            realm =  try! Realm()
         
          print("数据库地址：\(realm.configuration.fileURL!)")
         

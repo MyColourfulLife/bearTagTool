@@ -45,6 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(systemVersion!)
             print(uuidString!)
             
+            RealmManager.username = uuidString!
         }
 
     }
