@@ -218,7 +218,8 @@ class MarkView: UIView {
         doneBtn.isHidden = false
         cancelBtn.isHidden = true
         
-        
+        bringSubview(toFront: leftBtn)
+        bringSubview(toFront: rightBtn)
         
     }
     
