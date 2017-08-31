@@ -14,8 +14,8 @@ private let reuseIdentifier = "Cell"
 
 class ImageScanViewController: UICollectionViewController {
     
-    
-    var dataSource:Array<String> = PhotoManager.defaultManager.getImgList(path: PhotoManager.defaultManager.createImageSandBoxPath())!
+    var smallSoucre:Array<String> = []
+    var bigSoucre:Array<String> = []
     
     var markView: MarkView!
     
@@ -27,7 +27,18 @@ class ImageScanViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        let dataSource:Array<String> = PhotoManager.defaultManager.getImgList(path: PhotoManager.defaultManager.createImageSandBoxPath())!
+        
+        //筛选出所有的缩略图和大图
+        for name in dataSource {
+            if name.hasPrefix("compress_") {
+                smallSoucre.append(name)
+            }else{
+                bigSoucre.append(name)
+            }
+        }
+        
         // Register cell classes
         self.collectionView!.register(ImageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
@@ -51,7 +62,7 @@ class ImageScanViewController: UICollectionViewController {
             //保存标注信息
             let frame = FramePostion(value: [self.markView.lastFrame!.origin.x,self.markView.lastFrame!.origin.y,self.markView.lastFrame!.size.width,self.markView.lastFrame!.size.height])
             //更新frame
-            let fiter: NSPredicate = NSPredicate(format: "fileName == %@", self.dataSource[self.imgIndex])
+            let fiter: NSPredicate = NSPredicate(format: "fileName == %@", self.bigSoucre[self.imgIndex])
             if let item =  RealmManager.realmManager.realm.objects(PhotoItem.self).filter(fiter).first{
                 RealmManager.realmManager.doWriteHandler {
                     item.frame = frame
@@ -80,7 +91,7 @@ class ImageScanViewController: UICollectionViewController {
             // 1. 清除标注信息
             self.markView.clean()
             // 2. 重写读取数据绘图
-            self.drawRectUp(imgname: self.dataSource[self.imgIndex])
+            self.drawRectUp(imgname: self.bigSoucre[self.imgIndex])
             
         }
         
@@ -95,8 +106,8 @@ class ImageScanViewController: UICollectionViewController {
         let databaseToShare = RealmManager.realmManager.realm.configuration.fileURL!
         var items = [databaseToShare]
         //imgToShare
-        if dataSource.count > 0 {
-            for imgName in dataSource {
+        if bigSoucre.count > 0 {
+            for imgName in bigSoucre {
                 let imgPath = PhotoManager.defaultManager.createFilePath(fileName: imgName)
                 items.append(URL(fileURLWithPath: imgPath))
             }
@@ -129,7 +140,7 @@ class ImageScanViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return dataSource.count
+        return smallSoucre.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -140,7 +151,7 @@ class ImageScanViewController: UICollectionViewController {
         //获取路径
         
         //注意
-        let filePath = PhotoManager.defaultManager.createFilePath(fileName: dataSource[indexPath.row])
+        let filePath = PhotoManager.defaultManager.createFilePath(fileName: smallSoucre[indexPath.row])
         cell.imageView.sd_setImage(with: URL(fileURLWithPath: filePath))
         
     
@@ -174,7 +185,7 @@ class ImageScanViewController: UICollectionViewController {
         
         fillMarkViewWithIndex(index:imgIndex)
         
-        drawRectUp(imgname: dataSource[imgIndex])
+        drawRectUp(imgname: bigSoucre[imgIndex])
         
     }
     
@@ -190,7 +201,7 @@ class ImageScanViewController: UICollectionViewController {
         
         markView.clean()
         
-        drawRectUp(imgname: dataSource[imgIndex])
+        drawRectUp(imgname: bigSoucre[imgIndex])
         
         
     }
@@ -205,7 +216,7 @@ class ImageScanViewController: UICollectionViewController {
         
         markView.clean()
         
-        drawRectUp(imgname: dataSource[imgIndex])
+        drawRectUp(imgname: bigSoucre[imgIndex])
     }
     
     
@@ -247,7 +258,7 @@ class ImageScanViewController: UICollectionViewController {
     ///
     /// - Parameter index: 第几张图
     func fillMarkViewWithIndex(index:Int) {
-        let filePath = PhotoManager.defaultManager.createFilePath(fileName: dataSource[index])
+        let filePath = PhotoManager.defaultManager.createFilePath(fileName: bigSoucre[index])
         self.markView.bigImageView.sd_setImage(with: URL(fileURLWithPath: filePath))
 
         self.markView.bigImageView.layer.removeAnimation(forKey: "fade")
@@ -267,7 +278,7 @@ class ImageScanViewController: UICollectionViewController {
     func checkLeftAndRightIsNeedShow(index:Int) {
         if index == 0 {
             markView.leftBtn.isHidden = true
-        } else if index == dataSource.count - 1 {
+        } else if index == bigSoucre.count - 1 {
             markView.rightBtn.isHidden = true
         } else {
             markView.rightBtn.isHidden = false

@@ -11,6 +11,7 @@ import UIKit
 class DeviceInfoManager: NSObject {
     
     static var deviceType: String?
+    static var phoneName: String?
 
     /// 获取设备信息
     ///
@@ -39,18 +40,22 @@ class DeviceInfoManager: NSObject {
         deviceInfo["modelName"] = modelName
         
         DeviceInfoManager.deviceType = modelName
+        DeviceInfoManager.phoneName = deviceName
         
         //        本地化存储
         let userDefult = UserDefaults.standard
         userDefult.set(modelName, forKey: UserDefaultKeys.DeviceInfo.modelName.rawValue)
         userDefult.set(sysVersion, forKey: UserDefaultKeys.DeviceInfo.sysVersion.rawValue)
         userDefult.set(uuid, forKey: UserDefaultKeys.DeviceInfo.uuid.rawValue)
+        userDefult.set(deviceName, forKey: UserDefaultKeys.DeviceInfo.deviceName.rawValue)
         
         
         //        return deviceInfo;
         
         //创建数据库
         RealmManager.username = uuid!
+       
+        
        
         
     }
@@ -113,7 +118,7 @@ struct UserDefaultKeys {
         case modelName
         case sysVersion
         case uuid
-        
+        case deviceName
     }
     
 }

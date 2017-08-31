@@ -20,12 +20,15 @@ class FramePostion:Object {
 
 class PhotoItem: Object {
     dynamic var fileName = ""//文件名
+    dynamic var deviceType = ""//设备类型
+    dynamic var deviceName = ""//设备名称
     dynamic var fileSize = 0//文件大小
     dynamic var fileWidth = 0.00//文件宽
     dynamic var fileHeight = 0.00//文件高
     dynamic var createDate = 0//创建日期
     dynamic var filePath = ""//图片路径
-    dynamic var deviceType = ""//设备类型
     dynamic var frame:FramePostion?//图框位置
+    dynamic var smallImgName = ""//缩略图图片名
+    dynamic var smallImgPath = ""//缩略图图片路径
 }
 

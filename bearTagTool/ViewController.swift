@@ -28,9 +28,13 @@ class ViewController: UIViewController {
   
     let deviceType: String? = UserDefaults.standard.string(forKey: UserDefaultKeys.DeviceInfo.modelName.rawValue)
     
+    let deviceName: String? = UserDefaults.standard.string(forKey: UserDefaultKeys.DeviceInfo.deviceName.rawValue)
+    
     let tagSwitch = UISwitch()
     
     var hub: MBProgressHUD! = nil
+    
+    var smallSize: CGSize?
     
     
     override func viewDidLoad() {
@@ -61,7 +65,10 @@ class ViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "返回", style: .plain, target: nil, action: nil)
 
        
-
+        //获取屏幕宽度
+        let wid =  (UIScreen.main.bounds.width - 40)/3
+        smallSize = CGSize(width: wid, height: wid)
+        
         
         
     }
@@ -274,20 +281,37 @@ class ViewController: UIViewController {
                 //保存文件到沙盒
                 let (fileName,timeStamp) = createImgName()
                 
-
+                //保存原图到沙盒
                 let filePath = PhotoManager.defaultManager.createFilePath(fileName: fileName)
                 PhotoManager.defaultManager.createFile(at: filePath, contents: compressData!)
+                
+                //保存缩略图到沙盒
+                
+                //创建缩略图
+                
+               let smallImage = image.scaleTo(size: self.smallSize!)
+                
+                //命名 源文件加前追 compress_
+               let smallImageName = "compress_" + fileName
+                
+                //保存缩略图到沙盒
+                let smallfilePath = PhotoManager.defaultManager.createFilePath(fileName: smallImageName)
+                let smallData = UIImageJPEGRepresentation(smallImage, 0.5)!
+                PhotoManager.defaultManager.createFile(at: smallfilePath, contents: smallData)
                 
                 
                 //保存到数据库
                 let photoItem = PhotoItem()
                 photoItem.deviceType = self.deviceType ?? DeviceInfoManager.deviceType!
+                photoItem.deviceType = self.deviceName ?? DeviceInfoManager.phoneName!
                 photoItem.fileName = fileName
                 photoItem.fileSize = (compressData?.count)!
                 photoItem.fileWidth = Double(size.width)
                 photoItem.fileHeight = Double(size.height)
                 photoItem.createDate = timeStamp
                 photoItem.filePath =  filePath
+                photoItem.smallImgName = smallImageName
+                photoItem.smallImgPath = smallfilePath
                 
                 RealmManager.realmManager.doWriteHandler {
                     RealmManager.realmManager.realm.add(photoItem)
@@ -435,9 +459,35 @@ class ViewController: UIViewController {
         self.session.stopRunning()
     }
     
+    
+   
+    
 }
 
-
+extension UIImage {
+    
+    /// 缩放到指定大小
+    /// 
+    ///
+    /// - Parameter size: 缩放的尺寸
+    /// - Returns: 缩放后的图片
+    func scaleTo(size:CGSize) -> UIImage {
+    
+//        开启画布
+        UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
+        
+        UIGraphicsGetCurrentContext()!.interpolationQuality = .default
+        
+        draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        
+        let zoomImage = UIGraphicsGetImageFromCurrentImageContext()
+            
+        UIGraphicsEndImageContext()
+        
+        return zoomImage!
+    }
+    
+}
 
 
 
