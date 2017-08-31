@@ -157,6 +157,10 @@ class MarkViewController: UIViewController {
         endPoint = movePoint.location(in: showImage)
         
 //        print("endPoint:\(endPoint)")
+        //取两个点x和y的最小值作为 绘画起点， x和y最大值 作为会话终点
+        let newStart = CGPoint(x: min(startPoint.x, endPoint.x), y: min(startPoint.y, endPoint.y))
+        
+//        let newEnd = CGPoint(x: max(startPoint.x, endPoint.x), y: max(startPoint.y, endPoint.y))
         
         //画一个矩形添加到layer上
         let width = abs(endPoint.x - startPoint.x)
@@ -165,9 +169,9 @@ class MarkViewController: UIViewController {
         guard width >= 30 && height >= 30 else {
             return
         }
-        let originPoint = startPoint.y < endPoint.y ? startPoint : endPoint
+//        let originPoint = startPoint.y < endPoint.y ? startPoint : endPoint
         
-        let frame = CGRect(origin: originPoint, size: CGSize(width: width, height: height))
+        let frame = CGRect(origin: newStart, size: CGSize(width: width, height: height))
         rectView = RectView(frame:frame)
         showImage.addSubview(rectView!)
         lastFrame = rectView?.frame
