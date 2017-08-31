@@ -201,8 +201,8 @@ class MarkView: UIView {
         guard width >= 30 && height >= 30 else {
             return
         }
-        let originPoint = startPoint.y < endPoint.y ? startPoint : endPoint
-        
+        let originPoint = CGPoint(x: min(startPoint.x, endPoint.x), y: min(startPoint.y, endPoint.y))
+
         let frame = CGRect(origin: originPoint, size: CGSize(width: width, height: height))
         rectView = RectView(frame:frame)
         addSubview(rectView!)
