@@ -171,6 +171,8 @@ class BTMarkViewController: UIViewController {
             
             UIView.animate(withDuration: 0.25, animations: { 
                 self.markView.bigImageView.image = nil
+                self.markView.leftBtn.isHidden = true
+                self.markView.rightBtn.isHidden = true
                 self.markView.clean()
             })
             
@@ -199,6 +201,8 @@ class BTMarkViewController: UIViewController {
             UIView.animate(withDuration: 0.25, animations: {
                 self.markView.bigImageView.image = nil
                 self.markView.clean()
+                self.markView.leftBtn.isHidden = true
+                self.markView.rightBtn.isHidden = true
             })
             
             return

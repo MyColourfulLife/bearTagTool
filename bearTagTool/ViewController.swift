@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     var videoInput:         AVCaptureDeviceInput!           //输入
     var stillImageOutput:   AVCaptureStillImageOutput!      //输出
     var layerPreview:       AVCaptureVideoPreviewLayer!     //预览层
+    var device:             AVCaptureDevice!
     
     var controlView:        UIView!                         //容器视图
     
@@ -35,6 +36,9 @@ class ViewController: UIViewController {
     var hub: MBProgressHUD! = nil
     
     var smallSize: CGSize?
+    
+    
+    var deviceScale = CGFloat(1.0)
     
     
     override func viewDidLoad() {
@@ -143,9 +147,43 @@ class ViewController: UIViewController {
         takePhotoBtn.addTarget(self, action: #selector(takePhoto), for: .touchUpInside)
         albumEntryBtn.addTarget(self, action: #selector(scanImage), for: .touchUpInside)
 
+        let zoomGesture = UIPinchGestureRecognizer(target: self, action: #selector(zoomView(sender:)))
+        controlView.addGestureRecognizer(zoomGesture)
         
         
     }
+    
+    
+    
+    func zoomView(sender:UIPinchGestureRecognizer) {
+        
+        var scale = deviceScale + (sender.scale - 1 );
+        
+        //最大5倍 最小1倍
+        if scale > 5 {
+            scale = 5
+        } else if (scale < 1){
+            scale = 1
+        }
+        
+        do {
+            try device.lockForConfiguration()
+            device.videoZoomFactor = scale
+            device.unlockForConfiguration()
+        } catch _ {
+            
+        }
+        
+        
+        if sender.state == .ended {
+            deviceScale = scale
+        }
+        
+        
+        
+    }
+    
+    
     
     
     func tagSwitchChange(sender: UISwitch) {
@@ -167,7 +205,7 @@ class ViewController: UIViewController {
         do{
             //            1.创建会话 输入 和 输出
             self.session = AVCaptureSession()
-            let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+            device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
             self.videoInput = try AVCaptureDeviceInput(device: device)
             self.stillImageOutput = AVCaptureStillImageOutput()
             let outPutsetting = [AVVideoCodecKey: AVVideoCodecJPEG]
@@ -449,7 +487,16 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        deviceScale = 1.0
+        if device != nil {
+            do {
+                try device.lockForConfiguration()
+                device.videoZoomFactor = deviceScale
+                device.unlockForConfiguration()
+            } catch _ {
+                
+            }
+        }
         self.session.startRunning()
     }
     
@@ -458,6 +505,9 @@ class ViewController: UIViewController {
         super.viewWillDisappear(animated)
         self.session.stopRunning()
     }
+    
+
+
     
     
    
