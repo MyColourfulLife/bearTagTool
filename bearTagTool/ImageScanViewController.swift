@@ -21,6 +21,9 @@ class ImageScanViewController: UICollectionViewController {
     
     var editItem:UIBarButtonItem!
 
+    var sortItem:UIBarButtonItem!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,6 +38,9 @@ class ImageScanViewController: UICollectionViewController {
             }
         }
         
+        smallSoucre.sort(by: >)
+        bigSoucre.sort(by: >)
+        
         // Register cell classes
         self.collectionView!.register(ImageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
@@ -45,7 +51,12 @@ class ImageScanViewController: UICollectionViewController {
         let sharetem  = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareClick))
         editItem = UIBarButtonItem(title: "删除", style: .plain, target: self, action:  #selector(editClick))
         editItem.setTitleTextAttributes([NSForegroundColorAttributeName:UIColor.gray], for: .disabled)
-        navigationItem.rightBarButtonItems = [sharetem,editItem]
+        
+        sortItem = UIBarButtonItem(title: "正序", style: .plain, target: self, action:  #selector(sortClick))
+        sortItem.setTitleTextAttributes([NSForegroundColorAttributeName:UIColor.gray], for: .disabled)
+        
+        
+        navigationItem.rightBarButtonItems = [sharetem,editItem,sortItem]
         
         editItem.isEnabled = smallSoucre.count != 0
     }
@@ -144,7 +155,49 @@ class ImageScanViewController: UICollectionViewController {
         
     }
     
+    func sortClick() {
+        
+        //条件判断
+        if smallSoucre.count < 2 {
+            sortItem.isEnabled = false
+            return
+        }
+        
+        
+        //逻辑处理
+        
+        //处理数据
+        if sortItem.title == "正序" {
+            sortItem.title = "倒序"
+            
+            smallSoucre.sort(by: <)
+            bigSoucre.sort(by: <)
+            
+            collectionView?.reloadData()
+            
+        }else {
+            sortItem.title = "正序"
+            smallSoucre.sort(by: >)
+             bigSoucre.sort(by: >)
+             collectionView?.reloadData()
+        }
+        
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+    
+    
+    
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
