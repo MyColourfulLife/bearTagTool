@@ -23,6 +23,8 @@ class ImageScanViewController: UICollectionViewController {
 
     var sortItem:UIBarButtonItem!
     
+    var locateCellBtn:UIBarButtonItem!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,8 +57,10 @@ class ImageScanViewController: UICollectionViewController {
         sortItem = UIBarButtonItem(title: "正序", style: .plain, target: self, action:  #selector(sortClick))
         sortItem.setTitleTextAttributes([NSForegroundColorAttributeName:UIColor.gray], for: .disabled)
         
+       locateCellBtn = UIBarButtonItem(title: "定位", style: .plain, target: self, action:  #selector(locateCell))
         
-        navigationItem.rightBarButtonItems = [sharetem,editItem,sortItem]
+        navigationItem.rightBarButtonItems = [sharetem,editItem,sortItem,locateCellBtn]
+        
         
         editItem.isEnabled = smallSoucre.count != 0
     }
@@ -193,8 +197,65 @@ class ImageScanViewController: UICollectionViewController {
         
         
         
+    }
+    
+    
+    func locateCell() {
+        
+        if smallSoucre.count <= 1 {
+            return
+        }
+        
+        //读取最后一个标记
+        
+        var index = 0;
+        
+        //在数组中找到index
+        if let markImgName = UserDefaults.standard.string(forKey: "markIndex") {
+            
+            if let i = bigSoucre.index(of: markImgName) {
+                
+                index = i
+            }
+        }
+        
+        let indexPath = IndexPath(row: index, section: 0)
+        
+        //滚动到指定的cell
+        collectionView?.scrollToItem(at: indexPath, at: .top, animated: true)
+        
+        
+        //获取那个cell
+        
+        let delay = DispatchTime.now() + 0.25
+        
+        DispatchQueue.main.asyncAfter(deadline: delay) {
+            // 你想做啥
+            
+            if  let cell:ImageCell = self.collectionView?.cellForItem(at: indexPath) as? ImageCell  {
+                
+                UIView.animate(withDuration: 0.35, animations: {
+                    cell.transform = CGAffineTransform.identity.rotated(by: CGFloat.pi)
+                }, completion: { (yes) in
+                    UIView.animate(withDuration: 0.35, animations: {
+                         cell.transform = CGAffineTransform.identity.rotated(by: CGFloat.pi)
+                    }, completion: { (yes) in
+                        cell.transform = CGAffineTransform.identity
+                    })
+                    
+                })
+                
+                
+            }
+
+        }
+        
+        
+        
+        
         
     }
+
     
     
     

@@ -26,6 +26,8 @@ class ImageCell: UICollectionViewCell {
         deleteBtn.setImage(#imageLiteral(resourceName: "deleteIcon"), for: .normal)
         deleteBtn.addTarget(self, action: #selector(tapDelete), for: .touchUpInside)
         deleteBtn.isHidden = true
+        imageView.layer.borderWidth = 2
+        imageView.layer.borderColor = UIColor.white.cgColor
     }
     
     required init?(coder aDecoder: NSCoder) {

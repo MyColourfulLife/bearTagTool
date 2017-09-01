@@ -59,6 +59,9 @@ class BTMarkViewController: UIViewController {
                     item.frame = frame
                 }
             }
+            
+            UserDefaults.standard.setValue(self.bigSoucre[self.imgIndex], forKey: "markIndex")
+            
             //提示保存成功
             let hub = MBProgressHUD.showAdded(to: self.markView, animated: true)
             hub.label.text = "保存成功"

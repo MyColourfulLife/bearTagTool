@@ -222,6 +222,9 @@ class MarkViewController: UIViewController {
             }
         }
         
+        UserDefaults.standard.setValue(imgName, forKey: "markIndex")
+        
+        
         dismiss(animated: true) {
         }
     }
