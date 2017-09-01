@@ -18,6 +18,7 @@ class MarkViewController: UIViewController {
     
     var imgPath:String!
     var imgName:String!
+    var compImgPath:String!
     
     
     
@@ -32,8 +33,9 @@ class MarkViewController: UIViewController {
  
     
     
-    init(imagePath:String) {
+    init(imagePath:String,comperssImgPath:String) {
         imgPath = imagePath
+        compImgPath = comperssImgPath
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -193,6 +195,8 @@ class MarkViewController: UIViewController {
     func cancelClick() {
         //删除文件
         PhotoManager.defaultManager.deleateFile(path: imgPath)
+        //删除缩略图
+        PhotoManager.defaultManager.deleateFile(path: compImgPath)
         //从数据库中移除
         let fiter: NSPredicate = NSPredicate(format: "fileName == %@", imgName)
         

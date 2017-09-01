@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import RealmSwift
+import SDWebImage
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -73,6 +74,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             // Fallback on earlier versions
         }
+    }
+    
+    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+        let sdImageCache =  SDImageCache.shared()
+        sdImageCache.clearMemory()
+        sdImageCache.clearDisk(onCompletion: nil)
     }
 
     // MARK: - Core Data stack

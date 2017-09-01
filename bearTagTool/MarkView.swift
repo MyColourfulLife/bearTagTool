@@ -49,8 +49,6 @@ class MarkView: UIView {
         
         
         bigImageView.isUserInteractionEnabled = true
-       
-        
         
         let maskView = UIView()//用来遮挡快速切换时 为CollectionView的背景
         insertSubview(maskView, belowSubview: bigImageView)
@@ -174,6 +172,9 @@ class MarkView: UIView {
         guard let touchPoint = touches.first else {
             return
         }
+        
+
+        
         //获取开始点位置
         
         startPoint =  touchPoint.location(in: self)
@@ -182,7 +183,7 @@ class MarkView: UIView {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        if rectView != nil {
+        if rectView != nil  || bigImageView.image == nil {
             return
         }
         

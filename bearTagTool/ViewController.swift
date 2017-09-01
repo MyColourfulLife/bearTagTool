@@ -303,7 +303,7 @@ class ViewController: UIViewController {
                 //保存到数据库
                 let photoItem = PhotoItem()
                 photoItem.deviceType = self.deviceType ?? DeviceInfoManager.deviceType!
-                photoItem.deviceType = self.deviceName ?? DeviceInfoManager.phoneName!
+                photoItem.deviceName = self.deviceName ?? DeviceInfoManager.phoneName!
                 photoItem.fileName = fileName
                 photoItem.fileSize = (compressData?.count)!
                 photoItem.fileWidth = Double(size.width)
@@ -320,7 +320,7 @@ class ViewController: UIViewController {
                 if self.tagSwitch.isOn == true {
                     
                     //如果开启了标注就弹出标注页面
-                    let markViewCtr = MarkViewController(imagePath: filePath)
+                    let markViewCtr = MarkViewController(imagePath:filePath,comperssImgPath:smallfilePath)
                     markViewCtr.imgName = fileName
                     self.navigationController?.present(markViewCtr, animated: true, completion: nil)
 

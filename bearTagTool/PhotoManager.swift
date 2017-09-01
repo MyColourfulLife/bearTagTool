@@ -148,6 +148,13 @@ class PhotoManager: NSObject {
     }
     
     
+    /// 删除单个文件
+    ///
+    /// - Parameter name: 文件名
+    func deleateFile(name:String) {
+        try! file_manager.removeItem(atPath: createFilePath(fileName: name))
+    }
+    
     
     /// 创建相册
     func createAlbum(authorError: (Bool)->Void) {
