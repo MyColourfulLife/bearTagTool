@@ -240,7 +240,7 @@ class ImageScanViewController: UICollectionViewController {
                     UIView.animate(withDuration: 0.35, animations: {
                          cell.transform = CGAffineTransform.identity.rotated(by: CGFloat.pi)
                     }, completion: { (yes) in
-                        cell.transform = CGAffineTransform.identity
+//                        cell.transform = CGAffineTransform.identity
                     })
                     
                 })
