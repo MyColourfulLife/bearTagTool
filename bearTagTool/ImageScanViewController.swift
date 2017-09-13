@@ -81,27 +81,47 @@ class ImageScanViewController: UICollectionViewController {
             let databaseToShare = RealmManager.realmManager.realm.configuration.fileURL!
             var items = [databaseToShare]
             //imgToShare
+            
+       
+            
             if self.bigSoucre.count > 0 {
+                
+                var count = 1
+                let maxcount = self.bigSoucre.count
+                let hub = MBProgressHUD.showAdded(to: self.view, animated: true)
+                hub.mode = .determinateHorizontalBar
+                hub.label.text = "共\(self.bigSoucre.count)张，正在上传第\(count)张"
+                
                 for imgName in self.bigSoucre {
                     let imgPath = PhotoManager.defaultManager.createFilePath(fileName: imgName)
                     let fileUrl = URL(fileURLWithPath: imgPath)
                     items.append(URL(fileURLWithPath: imgPath))
                     
-                    
+//类型可以使用 mimeType:"application/octet-stream"
                     Alamofire.upload(multipartFormData: { (multipartFormData) in
                         
                         multipartFormData.append(fileUrl, withName: "file")
                         multipartFormData.append("姓名".data(using: .utf8)!, withName: "userName")
-                        
+
                     }, to: uploadUrl, encodingCompletion: { encodingResult in
                         
                         switch encodingResult {
                         case .success(let upload, _, _):
-                            upload.responseJSON { response in
+                            upload.uploadProgress{ progress in // main queue by default
+                                print("Upload Progress: \(progress.fractionCompleted)")
+                            }.responseJSON { response in
                                 debugPrint(response)
+                                hub.progress = Float(count)/Float(maxcount)
+                                hub.label.text = "共\(maxcount)张，正在上传第\(count)张"
+                                if count == maxcount {
+                                    hub.label.text = "上传完成"
+                                    hub.hide(animated: true, afterDelay: 1)
+                                }
+                                count = count + 1
                             }
                         case .failure(let encodingError):
                             print(encodingError)
+                            hub.hide(animated: true)
                         }
                         
                     })
