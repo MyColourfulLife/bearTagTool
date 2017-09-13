@@ -9,8 +9,10 @@
 import UIKit
 import SDWebImage
 import MBProgressHUD
+import Alamofire
 
 private let reuseIdentifier = "Cell"
+let uploadUrl = "http://192.168.1.170:8080/api/upload"
 
 class ImageScanViewController: UICollectionViewController {
     
@@ -82,11 +84,36 @@ class ImageScanViewController: UICollectionViewController {
             if self.bigSoucre.count > 0 {
                 for imgName in self.bigSoucre {
                     let imgPath = PhotoManager.defaultManager.createFilePath(fileName: imgName)
+                    let fileUrl = URL(fileURLWithPath: imgPath)
                     items.append(URL(fileURLWithPath: imgPath))
+                    
+                    
+                    Alamofire.upload(multipartFormData: { (multipartFormData) in
+                        
+                        multipartFormData.append(fileUrl, withName: "file")
+                        multipartFormData.append("姓名".data(using: .utf8)!, withName: "userName")
+                        
+                    }, to: uploadUrl, encodingCompletion: { encodingResult in
+                        
+                        switch encodingResult {
+                        case .success(let upload, _, _):
+                            upload.responseJSON { response in
+                                debugPrint(response)
+                            }
+                        case .failure(let encodingError):
+                            print(encodingError)
+                        }
+                        
+                    })
+                    
                 }
             }
             
             
+
+            
+            
+            return;
             let activityVC = UIActivityViewController(
                 activityItems: items,
                 applicationActivities: nil)
@@ -357,6 +384,8 @@ class ImageScanViewController: UICollectionViewController {
         sdImageCache.clearDisk(onCompletion: nil)
         
     }
+    
+    
     
     
 
