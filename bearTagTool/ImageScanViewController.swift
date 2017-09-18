@@ -74,9 +74,7 @@ class ImageScanViewController: UICollectionViewController {
     /// 分享按钮
     func shareClick() {
         
-        
-        let alertCtr = UIAlertController(title: "温馨提醒", message: "此功能将一键导出标注图片和标注文件，导出后将删除本地文件", preferredStyle: .alert)
-        alertCtr.addAction(UIAlertAction(title: "确定", style: .destructive, handler: { (action) in
+ 
             
             let databaseToShare = RealmManager.realmManager.realm.configuration.fileURL!
             var items = [databaseToShare]
@@ -86,45 +84,45 @@ class ImageScanViewController: UICollectionViewController {
             
             if self.bigSoucre.count > 0 {
                 
-                var count = 1
-                let maxcount = self.bigSoucre.count
-                let hub = MBProgressHUD.showAdded(to: self.view, animated: true)
-                hub.mode = .determinateHorizontalBar
-                hub.label.text = "共\(self.bigSoucre.count)张，正在上传第\(count)张"
+//                var count = 1
+//                let maxcount = self.bigSoucre.count
+//                let hub = MBProgressHUD.showAdded(to: self.view, animated: true)
+//                hub.mode = .determinateHorizontalBar
+//                hub.label.text = "共\(self.bigSoucre.count)张，正在上传第\(count)张"
                 
                 for imgName in self.bigSoucre {
                     let imgPath = PhotoManager.defaultManager.createFilePath(fileName: imgName)
-                    let fileUrl = URL(fileURLWithPath: imgPath)
+//                    let fileUrl = URL(fileURLWithPath: imgPath)
                     items.append(URL(fileURLWithPath: imgPath))
                     
 //类型可以使用 mimeType:"application/octet-stream"
-                    Alamofire.upload(multipartFormData: { (multipartFormData) in
-                        
-                        multipartFormData.append(fileUrl, withName: "file")
-                        multipartFormData.append("姓名".data(using: .utf8)!, withName: "userName")
-
-                    }, to: uploadUrl, encodingCompletion: { encodingResult in
-                        
-                        switch encodingResult {
-                        case .success(let upload, _, _):
-                            upload.uploadProgress{ progress in // main queue by default
-                                print("Upload Progress: \(progress.fractionCompleted)")
-                            }.responseJSON { response in
-                                debugPrint(response)
-                                hub.progress = Float(count)/Float(maxcount)
-                                hub.label.text = "共\(maxcount)张，正在上传第\(count)张"
-                                if count == maxcount {
-                                    hub.label.text = "上传完成"
-                                    hub.hide(animated: true, afterDelay: 1)
-                                }
-                                count = count + 1
-                            }
-                        case .failure(let encodingError):
-                            print(encodingError)
-                            hub.hide(animated: true)
-                        }
-                        
-                    })
+//                    Alamofire.upload(multipartFormData: { (multipartFormData) in
+//                        
+//                        multipartFormData.append(fileUrl, withName: "file")
+//                        multipartFormData.append("姓名".data(using: .utf8)!, withName: "userName")
+//
+//                    }, to: uploadUrl, encodingCompletion: { encodingResult in
+//                        
+//                        switch encodingResult {
+//                        case .success(let upload, _, _):
+//                            upload.uploadProgress{ progress in // main queue by default
+//                                print("Upload Progress: \(progress.fractionCompleted)")
+//                            }.responseJSON { response in
+//                                debugPrint(response)
+//                                hub.progress = Float(count)/Float(maxcount)
+//                                hub.label.text = "共\(maxcount)张，正在上传第\(count)张"
+//                                if count == maxcount {
+//                                    hub.label.text = "上传完成"
+//                                    hub.hide(animated: true, afterDelay: 1)
+//                                }
+//                                count = count + 1
+//                            }
+//                        case .failure(let encodingError):
+//                            print(encodingError)
+//                            hub.hide(animated: true)
+//                        }
+//                        
+//                    })
                     
                 }
             }
@@ -133,30 +131,58 @@ class ImageScanViewController: UICollectionViewController {
 
             
             
-            return;
+//            return;
             let activityVC = UIActivityViewController(
                 activityItems: items,
                 applicationActivities: nil)
-            activityVC.completionWithItemsHandler =  { activity, success, items, error in
+//            一个activity执行完 或者视图控制器被取消 会调用这个方法 是点击完成或者取消的回调，而不是某个activity成功或失败的回调。
+//              activityType: 被用户选中的服务类型
+//            completed: 如果服务被执行了，值为真，否则为假，如果用户没有选择，并直接取消了，此值也为假
+//            returnedItems: 包含任何修改数据的NSExtensionItem对象数组。 使用此阵列中的项目可以通过扩展名获取对原始数据所做的任何更改。 如果没有修改任何项目，则此参数的值为nil
+//            error:如果一个activity没有完成执行，就产生一个错误。如果activity正常完成了，就是nil
+
+            activityVC.completionWithItemsHandler =  { activity, completed, items, error in
+                
+                print(activity?.rawValue ?? "nothing to choose",completed,items ?? "nothing changed item",error ?? "nothing error")
                 
                 //分享成功删除数据
-                if success {
-                    
-                    //删除本地文件
-                    PhotoManager.defaultManager.deleateAllFiles()
-                    self.bigSoucre = []
-                    self.smallSoucre = []
-                    self.imgIndex = 0
-                    
-                    //删除数据库的记录
-                    
-                    RealmManager.realmManager.deleteAll()
+                
+                if (activity?.rawValue == "com.apple.UIKit.activity.AirDrop" && completed == true && error == nil) {
                     
                     
-                    //刷新表
-                    self.collectionView?.reloadData()
+                    let alertCtr = UIAlertController(title: "请确保文件已经传送完毕", message: "需要删除所有文件吗", preferredStyle: .alert)
+                    alertCtr.addAction(UIAlertAction(title: "删除", style: .destructive, handler: { (action) in
+                        //删除本地文件
+                        PhotoManager.defaultManager.deleateAllFiles()
+                        self.bigSoucre = []
+                        self.smallSoucre = []
+                        self.imgIndex = 0
+                        
+                        //删除数据库的记录
+                        
+                        RealmManager.realmManager.deleteAll()
+                        
+                        
+                        //刷新表
+                        self.collectionView?.reloadData()
+                    
+                    }))
+                    
+                    alertCtr.addAction(UIAlertAction(title: "取消", style: .cancel, handler: { (action) in
+                        
+                        
+                        
+                    }))
+                    
+                    self.present(alertCtr, animated: true, completion: {
+                        
+                    })
+                    
+                    
                     
                 }
+                
+                activityVC.completionWithItemsHandler = nil
                 
             }
             
@@ -166,18 +192,12 @@ class ImageScanViewController: UICollectionViewController {
             })
 
             
-        }))
-        
-        alertCtr.addAction(UIAlertAction(title: "取消", style: .cancel, handler: { (action) in
-           
-            
-            
-        }))
         
         
-        present(alertCtr, animated: true, completion: { 
-            
-        })
+        
+        
+        
+        
         
         
         
