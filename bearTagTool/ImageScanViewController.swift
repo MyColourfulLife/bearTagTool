@@ -28,9 +28,14 @@ class ImageScanViewController: UICollectionViewController {
     var locateCellBtn:UIBarButtonItem!
     
     
+    let userDefalut = UserDefaults.standard
+
+    var uuidString:String!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+       uuidString = userDefalut.string(forKey: UserDefaultKeys.DeviceInfo.uuid.rawValue)
         let dataSource:Array<String> = PhotoManager.defaultManager.getImgList(path: PhotoManager.defaultManager.createImageSandBoxPath())!
         
         //筛选出所有的缩略图和大图
@@ -71,7 +76,7 @@ class ImageScanViewController: UICollectionViewController {
     
     
     
-    /// 分享按钮
+    /// 点击上传
     func shareClick() {
     
             let databaseToShare = RealmManager.realmManager.realm.configuration.fileURL!
@@ -102,6 +107,7 @@ class ImageScanViewController: UICollectionViewController {
                         fileInfo["deviceName"] = item.deviceName
                         fileInfo["fileSize"] = ["width":item.fileWidth,"height":item.fileHeight]
                         fileInfo["createTime"] = String(item.createDate)
+                        fileInfo["uuid"] = uuidString
                         if let frame = item.frame {
                              fileInfo["markFrame"] = ["x":frame.x,"y":frame.y,"width":frame.width,"height":frame.height]
                         } else {
@@ -111,14 +117,42 @@ class ImageScanViewController: UICollectionViewController {
 //                        3. 上传文件
                         uploadFile(fileInfo: fileInfo, success: { (upload) in
                         
-                            hub.progress = Float(count)/Float(maxcount)
-                            hub.label.text = "共\(maxcount)张，正在上传第\(count)张"
-                            if count == maxcount {
-                                hub.label.text = "上传完成"
-                                hub.hide(animated: true, afterDelay: 1)
-                            } else{
-                                 count = count + 1
-                            }
+                            
+                            upload.uploadProgress(closure: { (Progress) in
+   
+                            }).responseJSON(completionHandler: { (response) in
+
+                                if let json = response.result.value {
+                                    
+                                let data = json as! NSDictionary
+                                    
+                                let code = data["code"]! as! Int
+                                   
+                                    if code == 1 {
+                                        hub.progress = Float(count)/Float(maxcount)
+                                        hub.label.text = "共\(maxcount)张，正在上传第\(count)张"
+                                        if count == maxcount {
+                                            hub.label.text = "上传完成"
+                                            hub.hide(animated: true, afterDelay: 1)
+                                            
+                                            //询问是否要删除所有文件
+                                            let delay = DispatchTime.now() + 1
+                                            DispatchQueue.main.asyncAfter(deadline: delay) {
+                                                self.deleteWarn();
+                                            }
+                                            
+                                        } else{
+                                            count = count + 1
+                                        }
+                                    } else {
+                                        print("图片上传失败")
+                                        count = count + 1
+                                    }
+                                    
+                                }
+                                
+
+                            })
                             
                        }, failure: { (err) in
                         print(err)
@@ -132,73 +166,44 @@ class ImageScanViewController: UICollectionViewController {
                     
                 }
             }
-            
-            
-
-            
-            
-            return;
-            let activityVC = UIActivityViewController(
-                activityItems: items,
-                applicationActivities: nil)
-//            一个activity执行完 或者视图控制器被取消 会调用这个方法 是点击完成或者取消的回调，而不是某个activity成功或失败的回调。
-//              activityType: 被用户选中的服务类型
-//            completed: 如果服务被执行了，值为真，否则为假，如果用户没有选择，并直接取消了，此值也为假
-//            returnedItems: 包含任何修改数据的NSExtensionItem对象数组。 使用此阵列中的项目可以通过扩展名获取对原始数据所做的任何更改。 如果没有修改任何项目，则此参数的值为nil
-//            error:如果一个activity没有完成执行，就产生一个错误。如果activity正常完成了，就是nil
-
-            activityVC.completionWithItemsHandler =  { activity, completed, items, error in
-                
-                
-                //分享成功删除数据
-                
-                if (activity?.rawValue == "com.apple.UIKit.activity.AirDrop" && completed == true && error == nil) {
-                    
-                    
-                    let alertCtr = UIAlertController(title: "请确保文件已经传送完毕", message: "需要删除所有文件吗", preferredStyle: .alert)
-                    alertCtr.addAction(UIAlertAction(title: "删除", style: .destructive, handler: { (action) in
-                        //删除本地文件
-                        PhotoManager.defaultManager.deleateAllFiles()
-                        self.bigSoucre = []
-                        self.smallSoucre = []
-                        self.imgIndex = 0
-                        
-                        //删除数据库的记录
-                        
-                        RealmManager.realmManager.deleteAll()
-                        
-                        
-                        //刷新表
-                        self.collectionView?.reloadData()
-                    
-                    }))
-                    
-                    alertCtr.addAction(UIAlertAction(title: "取消", style: .cancel, handler: { (action) in
-                        
-                        
-                        
-                    }))
-                    
-                    self.present(alertCtr, animated: true, completion: {
-                        
-                    })
-                    
-                    
-                    
-                }
-                
-                activityVC.completionWithItemsHandler = nil
-                
-            }
-            
-            
-            self.present(activityVC, animated: true, completion: { () -> Void in
-                
-            })
-
+        
         
         
     }
+    
+    
+    /// 删除警告
+    func deleteWarn(){
+        let alertCtr = UIAlertController(title: "文件已传送完毕", message: "需要删除所有文件吗", preferredStyle: .alert)
+        alertCtr.addAction(UIAlertAction(title: "删除", style: .destructive, handler: { (action) in
+            //删除本地文件
+            PhotoManager.defaultManager.deleateAllFiles()
+            self.bigSoucre = []
+            self.smallSoucre = []
+            self.imgIndex = 0
+            
+            //删除数据库的记录
+            
+            RealmManager.realmManager.deleteAll()
+            
+            
+            //刷新表
+            self.collectionView?.reloadData()
+            
+        }))
+        
+        alertCtr.addAction(UIAlertAction(title: "暂不删除", style: .cancel, handler: { (action) in
+            
+            
+            
+        }))
+        
+        self.present(alertCtr, animated: true, completion: {
+            
+        })
+
+    }
+    
     
     
     func uploadFile(fileInfo:NSDictionary,success:@escaping ((_ request: UploadRequest)->Void),failure: @escaping (_: Error)->Void) -> Void {
@@ -209,6 +214,7 @@ class ImageScanViewController: UICollectionViewController {
             let fileName = fileInfo["fileName"] as! String;
             let deviceType = fileInfo["deviceType"] as! String;
             let deviceName = fileInfo["deviceName"] as! String;
+            let uuid = fileInfo["uuid"] as! String;
             let fileSize = fileInfo["fileSize"] as! NSDictionary;
             let createTime = fileInfo["createTime"] as! String;
             let markFrame = fileInfo["markFrame"] as! NSDictionary;
@@ -221,6 +227,7 @@ class ImageScanViewController: UICollectionViewController {
             multipartFormData.append(deviceType.data(using: .utf8)!, withName: "deviceType")
             multipartFormData.append(deviceName.data(using: .utf8)!, withName: "deviceName")
             multipartFormData.append(createTime.data(using: .utf8)!, withName: "createTime")
+            multipartFormData.append(uuid.data(using: .utf8)!, withName: "uuid")
             multipartFormData.append(fileSizeData, withName: "fileSize")
             multipartFormData.append(markFrameData, withName: "markFrame")
 
@@ -230,24 +237,9 @@ class ImageScanViewController: UICollectionViewController {
             
             switch encodingResult {
             case .success(let upload, _, _):
-                
                 success(upload)
-                
-//                upload.uploadProgress{ progress in // main queue by default
-//                    print("Upload Progress: \(progress.fractionCompleted)")
-//                    }.responseJSON { response in
-//                        debugPrint(response)
-//                        hub.progress = Float(count)/Float(maxcount)
-//                        hub.label.text = "共\(maxcount)张，正在上传第\(count)张"
-//                        if count == maxcount {
-//                            hub.label.text = "上传完成"
-//                            hub.hide(animated: true, afterDelay: 1)
-//                        }
-//                        count = count + 1
-//                }
             case .failure(let encodingError):
                 failure(encodingError)
-//                hub.hide(animated: true)
             }
             
         })
