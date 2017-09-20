@@ -12,7 +12,8 @@ import MBProgressHUD
 import Alamofire
 
 private let reuseIdentifier = "Cell"
-let uploadUrl = "http://192.168.1.170:8080/api/upload"
+//let uploadUrl = "http://192.168.1.170:8080/api/upload"
+let uploadUrl = "http://www.id-bear.com/photoserver/api/upload";
 
 class ImageScanViewController: UICollectionViewController {
     
@@ -27,14 +28,12 @@ class ImageScanViewController: UICollectionViewController {
     
     var locateCellBtn:UIBarButtonItem!
     
-    
-    let userDefalut = UserDefaults.standard
-
     var uuidString:String!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let userDefalut = UserDefaults.standard
        uuidString = userDefalut.string(forKey: UserDefaultKeys.DeviceInfo.uuid.rawValue)
         let dataSource:Array<String> = PhotoManager.defaultManager.getImgList(path: PhotoManager.defaultManager.createImageSandBoxPath())!
         
@@ -146,6 +145,7 @@ class ImageScanViewController: UICollectionViewController {
                                         }
                                     } else {
                                         print("图片上传失败")
+                                        hub.label.text = "图片上传失败"
                                         count = count + 1
                                     }
                                     
