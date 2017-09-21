@@ -151,7 +151,7 @@ class BTMarkViewController: UIViewController {
     }
     
   
-    func close() {
+    @objc func close() {
         
         //更新下数据源
         if updataDataSouce != nil {
@@ -168,7 +168,7 @@ class BTMarkViewController: UIViewController {
     
     
     
-    func deleteFile() {
+    @objc func deleteFile() {
         
         if bigSoucre.count == 0 {
             
@@ -219,7 +219,7 @@ class BTMarkViewController: UIViewController {
     }
     
     //向左
-    func clickLeft(leftBtn:UIButton) {
+    @objc func clickLeft(leftBtn:UIButton) {
         
         imgIndex = imgIndex - 1
         
@@ -235,7 +235,7 @@ class BTMarkViewController: UIViewController {
     }
     
     //向右
-    func clickRight(rightBtn:UIButton) {
+    @objc func clickRight(rightBtn:UIButton) {
         imgIndex = imgIndex + 1
         
         checkLeftAndRightIsNeedShow(index: imgIndex)

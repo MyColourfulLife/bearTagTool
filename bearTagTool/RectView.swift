@@ -41,7 +41,7 @@ class RectView: UIView {
     }
     
     
-    func handlePanGesture(gesture:UIPanGestureRecognizer) {
+    @objc func handlePanGesture(gesture:UIPanGestureRecognizer) {
         //获取拖动位置的中心
         if self.superview != nil {
             var center = self.center

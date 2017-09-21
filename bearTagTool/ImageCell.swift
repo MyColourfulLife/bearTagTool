@@ -35,7 +35,7 @@ class ImageCell: UICollectionViewCell {
     }
     
     
-    func tapDelete() {
+    @objc func tapDelete() {
         
         if (deleteBlock != nil) {
             deleteBlock!(self)

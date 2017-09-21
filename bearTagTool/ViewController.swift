@@ -26,7 +26,6 @@ class ViewController: UIViewController {
     
     static let uuid: String = UserDefaults.standard.string(forKey: UserDefaultKeys.DeviceInfo.uuid.rawValue)!
     static let uuidlast4carater = uuid.substring(from: uuid.index(uuid.endIndex, offsetBy: -4))
-  
     let deviceType: String? = UserDefaults.standard.string(forKey: UserDefaultKeys.DeviceInfo.modelName.rawValue)
     
     let deviceName: String? = UserDefaults.standard.string(forKey: UserDefaultKeys.DeviceInfo.deviceName.rawValue)
@@ -155,7 +154,7 @@ class ViewController: UIViewController {
     
     
     
-    func zoomView(sender:UIPinchGestureRecognizer) {
+    @objc func zoomView(sender:UIPinchGestureRecognizer) {
         
         var scale = deviceScale + (sender.scale - 1 );
         
@@ -186,7 +185,7 @@ class ViewController: UIViewController {
     
     
     
-    func tagSwitchChange(sender: UISwitch) {
+    @objc func tagSwitchChange(sender: UISwitch) {
         
         if sender.isOn == false {
             UserDefaults.standard.set(3, forKey: "tagSwitchStatus")
@@ -205,7 +204,7 @@ class ViewController: UIViewController {
         do{
             //            1.创建会话 输入 和 输出
             self.session = AVCaptureSession()
-            device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+            device = AVCaptureDevice.default(for: .video)
             self.videoInput = try AVCaptureDeviceInput(device: device)
             self.stillImageOutput = AVCaptureStillImageOutput()
             let outPutsetting = [AVVideoCodecKey: AVVideoCodecJPEG]
@@ -217,7 +216,7 @@ class ViewController: UIViewController {
             
             //            3.初始化预览层
             self.layerPreview = AVCaptureVideoPreviewLayer(session: self.session)
-            self.layerPreview.videoGravity = AVLayerVideoGravityResizeAspectFill
+            self.layerPreview.videoGravity = AVLayerVideoGravity.resizeAspectFill
             self.layerPreview.frame = self.controlView.frame
             self.view.layer.insertSublayer(self.layerPreview, at: 0)
             
@@ -264,7 +263,7 @@ class ViewController: UIViewController {
     
     
     
-    func scanImage() {
+    @objc func scanImage() {
         
         let collectionLayout = UICollectionViewFlowLayout()
         
@@ -285,11 +284,11 @@ class ViewController: UIViewController {
     
     
     
-    func takePhoto() {
+    @objc func takePhoto() {
         
 //        self.shutterAnimation()
         
-        let stillimageConnect: AVCaptureConnection = self.stillImageOutput.connection(withMediaType: AVMediaTypeVideo)
+        let stillimageConnect: AVCaptureConnection = self.stillImageOutput.connection(with: .video)!
         
         let curDeviceOrientation = UIDevice.current.orientation
         
@@ -300,10 +299,11 @@ class ViewController: UIViewController {
         
         stillImageOutput.captureStillImageAsynchronously(from: stillimageConnect) { (imgaeDataSampleBuffer, error) in
             
+            if error != nil {
+                return;
+            }
             
-            let jpegData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imgaeDataSampleBuffer)
-            
-            
+            let jpegData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imgaeDataSampleBuffer!)
             
             if let image = UIImage(data: jpegData!) {
                 

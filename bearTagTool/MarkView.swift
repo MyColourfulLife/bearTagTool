@@ -142,7 +142,7 @@ class MarkView: UIView {
     
 //    makeConstraints(_ closure: (_ make: ConstraintMaker) -> Void)
     
-    func clickGoBack() {
+    @objc func clickGoBack() {
         if goBackClick != nil {
             goBackClick!()
             
@@ -152,14 +152,14 @@ class MarkView: UIView {
     
     
     /// 点击了完成按钮
-    func doneClick() {
+    @objc func doneClick() {
         if doneClickBlock != nil {
             doneClickBlock!()
             
         }
     }
     
-    func clean() {
+    @objc func clean() {
         rectView?.removeFromSuperview()
         rectView = nil
         cleanBtn.isHidden = true

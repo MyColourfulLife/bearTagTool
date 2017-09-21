@@ -192,7 +192,7 @@ class MarkViewController: UIViewController {
     
     
     /// 点击了返回按钮 文件不保存
-    func cancelClick() {
+    @objc func cancelClick() {
         //删除文件
         PhotoManager.defaultManager.deleateFile(path: imgPath)
         //删除缩略图
@@ -211,7 +211,7 @@ class MarkViewController: UIViewController {
     }
     
     /// 点击了完成按钮
-    func doneClick() {
+    @objc func doneClick() {
         //保存标注信息
        let frame = FramePostion(value: [lastFrame!.origin.x,lastFrame!.origin.y,lastFrame!.size.width,lastFrame!.size.height])
         //更新frame
@@ -230,7 +230,7 @@ class MarkViewController: UIViewController {
     }
     
     
-    func clean() {
+    @objc func clean() {
         rectView?.removeFromSuperview()
         rectView = nil
         cleanBtn.isHidden = true

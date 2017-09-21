@@ -58,10 +58,10 @@ class ImageScanViewController: UICollectionViewController {
         
         let sharetem  = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareClick))
         editItem = UIBarButtonItem(title: "删除", style: .plain, target: self, action:  #selector(editClick))
-        editItem.setTitleTextAttributes([NSForegroundColorAttributeName:UIColor.gray], for: .disabled)
+        editItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor:UIColor.gray], for: .disabled)
         
         sortItem = UIBarButtonItem(title: "正序", style: .plain, target: self, action:  #selector(sortClick))
-        sortItem.setTitleTextAttributes([NSForegroundColorAttributeName:UIColor.gray], for: .disabled)
+        sortItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor:UIColor.gray], for: .disabled)
         
        locateCellBtn = UIBarButtonItem(title: "定位", style: .plain, target: self, action:  #selector(locateCell))
         
@@ -76,7 +76,7 @@ class ImageScanViewController: UICollectionViewController {
     
     
     /// 点击上传
-    func shareClick() {
+    @objc func shareClick() {
     
             let databaseToShare = RealmManager.realmManager.realm.configuration.fileURL!
             var items = [databaseToShare]
@@ -173,7 +173,7 @@ class ImageScanViewController: UICollectionViewController {
     
     
     /// 删除警告
-    func deleteWarn(){
+    @objc func deleteWarn(){
         let alertCtr = UIAlertController(title: "文件已传送完毕", message: "需要删除所有文件吗", preferredStyle: .alert)
         alertCtr.addAction(UIAlertAction(title: "删除", style: .destructive, handler: { (action) in
             //删除本地文件
@@ -206,7 +206,7 @@ class ImageScanViewController: UICollectionViewController {
     
     
     
-    func uploadFile(fileInfo:NSDictionary,success:@escaping ((_ request: UploadRequest)->Void),failure: @escaping (_: Error)->Void) -> Void {
+  func uploadFile(fileInfo:NSDictionary,success:@escaping ((_ request: UploadRequest)->Void),failure: @escaping (_: Error)->Void) -> Void {
         
         Alamofire.upload(multipartFormData: { (multipartFormData) in
             
@@ -248,7 +248,7 @@ class ImageScanViewController: UICollectionViewController {
     
     
     
-    func editClick(){
+    @objc func editClick(){
     
         if smallSoucre.count == 0 {
             editItem.title = "删除"
@@ -270,7 +270,7 @@ class ImageScanViewController: UICollectionViewController {
         
     }
     
-    func sortClick() {
+    @objc func sortClick() {
         
         //条件判断
         if smallSoucre.count < 2 {
@@ -311,7 +311,7 @@ class ImageScanViewController: UICollectionViewController {
     }
     
     
-    func locateCell() {
+    @objc func locateCell() {
         
         if smallSoucre.count <= 1 {
             return
