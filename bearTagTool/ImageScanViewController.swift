@@ -28,6 +28,8 @@ class ImageScanViewController: UICollectionViewController {
     
     var locateCellBtn:UIBarButtonItem!
     
+    var shareItem:UIBarButtonItem!
+    
     var uuidString:String!
     
     
@@ -56,16 +58,19 @@ class ImageScanViewController: UICollectionViewController {
         collectionView?.backgroundColor = UIColor.white
         title = "图片采集库"
         
-        let sharetem  = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareClick))
+        shareItem = UIBarButtonItem(title: "上传", style: .plain, target: self, action:  #selector(shareClick))
+        shareItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor:UIColor.gray], for: .disabled)
+        
         editItem = UIBarButtonItem(title: "删除", style: .plain, target: self, action:  #selector(editClick))
         editItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor:UIColor.gray], for: .disabled)
+        
         
         sortItem = UIBarButtonItem(title: "正序", style: .plain, target: self, action:  #selector(sortClick))
         sortItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor:UIColor.gray], for: .disabled)
         
        locateCellBtn = UIBarButtonItem(title: "定位", style: .plain, target: self, action:  #selector(locateCell))
         
-        navigationItem.rightBarButtonItems = [sharetem,editItem,sortItem,locateCellBtn]
+        navigationItem.rightBarButtonItems = [shareItem,editItem,sortItem,locateCellBtn]
         
         
         editItem.isEnabled = smallSoucre.count != 0
@@ -78,11 +83,15 @@ class ImageScanViewController: UICollectionViewController {
     /// 点击上传
     @objc func shareClick() {
     
-            let databaseToShare = RealmManager.realmManager.realm.configuration.fileURL!
-            var items = [databaseToShare]
-            //imgToShare
+        if self.bigSoucre.count < 1 {
+            editItem.isEnabled = false;
+            return;
+        }
+        editItem.isEnabled = false;
         
-            if self.bigSoucre.count > 0 {
+                let databaseToShare = RealmManager.realmManager.realm.configuration.fileURL!
+                var items = [databaseToShare]
+                //imgToShare
                 var count = 1
                 let maxcount = self.bigSoucre.count
                 let hub = MBProgressHUD.showAdded(to: self.view, animated: true)
@@ -115,7 +124,7 @@ class ImageScanViewController: UICollectionViewController {
                        
 //                        3. 上传文件
                         uploadFile(fileInfo: fileInfo, success: { (upload) in
-                        
+                         self.editItem.isEnabled = true;
                             
                             upload.uploadProgress(closure: { (Progress) in
    
@@ -156,6 +165,7 @@ class ImageScanViewController: UICollectionViewController {
                             
                        }, failure: { (err) in
                         print(err)
+                         self.editItem.isEnabled = true;
                         hub.hide(animated: true)
                        })
                         
@@ -165,7 +175,6 @@ class ImageScanViewController: UICollectionViewController {
 
                     
                 }
-            }
         
         
         
@@ -189,6 +198,8 @@ class ImageScanViewController: UICollectionViewController {
             
             //刷新表
             self.collectionView?.reloadData()
+            
+            self.editItem.isEnabled = false;
             
         }))
         
