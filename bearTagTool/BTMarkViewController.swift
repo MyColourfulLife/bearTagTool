@@ -41,6 +41,7 @@ class BTMarkViewController: UIViewController {
         initView()
 
         
+        
         //检查//画图
         checkLeftAndRightIsNeedShow(index:imgIndex)
         fillMarkViewWithIndex(index:imgIndex)
@@ -299,10 +300,28 @@ class BTMarkViewController: UIViewController {
                 let rectFrame = CGRect(x: frame.x, y: frame.y, width: frame.width, height: frame.height)
                 markView.rectView = RectView(frame:rectFrame)
                 markView.addSubview(markView.rectView!)
+                
+                markView.rectView?.snp.makeConstraints({ (make) in
+                    make.top.equalTo(frame.y);
+                    make.left.equalTo(frame.x);
+                    make.width.equalTo(frame.width);
+                    make.height.equalTo(frame.height);
+                })
+                
+                
                 markView.insertSubview(markView.rectView!, belowSubview: markView.doneBtn)
                 markView.lastFrame = rectFrame
                 markView.rectView?.panGestureEndedClosure = {
                     self.markView.lastFrame = self.markView.rectView?.frame
+                    let frame = self.markView.rectView!.frame;
+                    self.markView.rectView?.snp.updateConstraints({ (make) in
+                        make.top.equalTo(frame.minY);
+                        make.left.equalTo(frame.minX);
+                        make.width.equalTo(frame.width);
+                        make.height.equalTo(frame.height);
+                    })
+                    
+                    
                     //                    print("移动后\(self.markView.lastFrame!)")
                 }
                 // 还原 清除 和 修改
@@ -317,5 +336,74 @@ class BTMarkViewController: UIViewController {
             }
         }
     }
+    
+    override var previewActionItems: [UIPreviewActionItem]{
+        get {
+            let deleteAction =  UIPreviewAction(title: "删除",
+                                                style: UIPreviewActionStyle.destructive,
+                                                handler: {
+                                                    (previewAction,viewController) in
+                                                    
+                                                    
+                                                    self.deleteFile();
+                                                    
+                                                    if self.updataDataSouce != nil {
+                                                        self.self.updataDataSouce!(self.imgIndex,self.bigSoucre,self.smallSoucre)
+                                                    }
+                                                    
+                                                    viewController.dismiss(animated: true, completion: nil)
+                                                    
+                                                    
+                                                    
+                                                    
+            })
+            
+            let doneAction = UIPreviewAction(title: "下载",
+                                             style: UIPreviewActionStyle.default,
+                                             handler: {
+                                                (previewActin, viewController) in
+                                                
+                                                self.saveToAlbum(image: self.markView.bigImageView.image!);
+                                                
+            })
+            
+            
+            return [doneAction, deleteAction]
+        }
+    }
+    
+    
+    func saveToAlbum(image: UIImage) {
+        
+        if PhotoManager.defaultManager.assetCollection == nil {
+            PhotoManager.defaultManager.createAlbum(authorError: { error in
+                
+                let errorAlert = UIAlertController(title: "保存相片失败", message: "请在iPhone的\"设置-隐私-照片\"选项中，允许本程序访问您的照片", preferredStyle: .alert)
+                self.present(errorAlert, animated: true, completion: nil)
+                
+                errorAlert.addAction(UIAlertAction(title: "好的", style: .default, handler: { (UIAlertAction) in
+                    self.dismiss(animated: true, completion: nil)
+                }))
+                
+            })
+        } else {
+            
+            PhotoManager.defaultManager.savePhoto(image: image, authorError: {
+                error in
+                
+                let errorAlert = UIAlertController(title: "保存相片失败", message: "请在iPhone的\"设置-隐私-照片\"选项中，允许本程序访问您的照片", preferredStyle: .alert)
+                self.present(errorAlert, animated: true, completion: nil)
+                
+                errorAlert.addAction(UIAlertAction(title: "好的", style: .default, handler: { (UIAlertAction) in
+                    self.dismiss(animated: true, completion: nil)
+                }))
+                
+                
+            })
+            
+        }
+        
+    }
+    
     
 }

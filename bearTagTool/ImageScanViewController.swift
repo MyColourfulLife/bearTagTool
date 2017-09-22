@@ -15,7 +15,8 @@ private let reuseIdentifier = "Cell"
 //let uploadUrl = "http://192.168.1.170:8080/api/upload"
 let uploadUrl = "http://www.id-bear.com/photoserver/api/upload";
 
-class ImageScanViewController: UICollectionViewController {
+class ImageScanViewController: UICollectionViewController, UIViewControllerPreviewingDelegate {
+
     
     var smallSoucre:Array<String> = []
     var bigSoucre:Array<String> = []
@@ -32,6 +33,7 @@ class ImageScanViewController: UICollectionViewController {
     
     var uuidString:String!
     
+    var is3dCanUse = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +49,13 @@ class ImageScanViewController: UICollectionViewController {
                 bigSoucre.append(name)
             }
         }
+        
+//        如果支持 添加3dtouch
+        is3dCanUse = traitCollection.forceTouchCapability == .available
+        if is3dCanUse {
+            registerForPreviewing(with: self, sourceView: collectionView!)
+        }
+        
         
         smallSoucre.sort(by: >)
         bigSoucre.sort(by: >)
@@ -396,14 +405,17 @@ class ImageScanViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: ImageCell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ImageCell
-    
+        
         // Configure the cell
+//        if self.is3dCanUse {
+//             registerForPreviewing(with: self, sourceView: cell)
+//        }
         
-        //获取路径
-        
-        //注意
+       
         let filePath = PhotoManager.defaultManager.createFilePath(fileName: smallSoucre[indexPath.row])
         cell.imageView.sd_setImage(with: URL(fileURLWithPath: filePath))
+        
+        
         
         if editItem.title == "删除" {
             cell.deleteBtn.isHidden = true
@@ -480,11 +492,52 @@ class ImageScanViewController: UICollectionViewController {
         
     }
     
-    
-    
-    
 
+    //    Peek操作
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 
+       let indexPath = collectionView?.indexPathForItem(at: location)
+       imgIndex = indexPath?.row
+        
+        
+        // previewingContext.sourceView: 触发Peek & Pop操作的视图
+        // previewingContext.sourceRect: 设置触发操作的视图的不被虚化的区域
+       
+        let sourceView = previewingContext.sourceView
+        
+        if sourceView != collectionView {
+            return nil
+        }
+        
+        let btmarCtr = BTMarkViewController(currentIndex:imgIndex,dataSouce:bigSoucre,smallDataSouce:smallSoucre)
+        btmarCtr.updataDataSouce = {
+            currentIndex,bigSoucre,smallSoucre in
+            self.imgIndex = currentIndex
+            self.bigSoucre = bigSoucre
+            self.smallSoucre = smallSoucre
+            self.collectionView?.reloadData()
+            self.editItem.isEnabled = self.smallSoucre.count != 0
+        }
+        
+     
+        
+        return btmarCtr
+    
+    }
+    //    pop操作
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+//      标注界面
+        present(viewControllerToCommit, animated: true, completion: nil)
+        
+    }
+    
+    //额外的操作需要在被pop的控制器中写
+    
+    
+    
+    
 }
+    
+
 
 

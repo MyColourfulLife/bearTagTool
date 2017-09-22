@@ -207,6 +207,15 @@ class MarkView: UIView {
         let frame = CGRect(origin: originPoint, size: CGSize(width: width, height: height))
         rectView = RectView(frame:frame)
         addSubview(rectView!)
+        
+        rectView?.snp.makeConstraints({ (make) in
+            make.top.equalTo(originPoint.y);
+            make.left.equalTo(originPoint.x);
+            make.width.equalTo(width);
+            make.height.equalTo(height);
+        })
+        
+        
         lastFrame = rectView?.frame
         
         rectView?.panGestureEndedClosure = {

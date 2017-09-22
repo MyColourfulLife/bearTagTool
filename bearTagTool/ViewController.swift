@@ -81,7 +81,7 @@ class ViewController: UIViewController {
     /// 添加并配置控制视图
     func configContrlView() -> Void {
         
-        let applicationframe = UIScreen.main.applicationFrame.size
+        let applicationframe = UIScreen.main.bounds.size
         self.controlView = UIView(frame: CGRect(x: 0, y: 64, width: applicationframe.width, height: applicationframe.height - 44))
         controlView.backgroundColor = UIColor.clear
         self.view.addSubview(controlView)
