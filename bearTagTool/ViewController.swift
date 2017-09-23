@@ -233,7 +233,7 @@ class ViewController: UIViewController {
             let errorAlert = UIAlertController(title: "提醒", message: "请在iPhone的\"设置-隐私-相机\"选项中，允许本程序访问您的相机", preferredStyle: .alert)
             self.present(errorAlert, animated: true, completion: nil)
             
-            errorAlert.addAction(UIAlertAction(title: "好的", style: .default, handler: { (UIAlertAction) in
+            errorAlert.addAction(UIAlertAction(title: "好的", style: .default, handler: { [unowned self] (UIAlertAction) in
                 self.dismiss(animated: true, completion: nil)
             }))
             
@@ -500,12 +500,12 @@ class ViewController: UIViewController {
         func saveToAlbum(image: UIImage) {
             
             if PhotoManager.defaultManager.assetCollection == nil {
-                PhotoManager.defaultManager.createAlbum(authorError: { error in
+                PhotoManager.defaultManager.createAlbum(authorError: {[unowned self] error in
                     
                     let errorAlert = UIAlertController(title: "保存相片失败", message: "请在iPhone的\"设置-隐私-照片\"选项中，允许本程序访问您的照片", preferredStyle: .alert)
                     self.present(errorAlert, animated: true, completion: nil)
                     
-                    errorAlert.addAction(UIAlertAction(title: "好的", style: .default, handler: { (UIAlertAction) in
+                    errorAlert.addAction(UIAlertAction(title: "好的", style: .default, handler: {[unowned self] (UIAlertAction) in
                         self.dismiss(animated: true, completion: nil)
                     }))
                     
@@ -513,12 +513,12 @@ class ViewController: UIViewController {
             } else {
                 
                 PhotoManager.defaultManager.savePhoto(image: image, authorError: {
-                    error in
+                  [unowned self]  error in
                     
                     let errorAlert = UIAlertController(title: "保存相片失败", message: "请在iPhone的\"设置-隐私-照片\"选项中，允许本程序访问您的照片", preferredStyle: .alert)
                     self.present(errorAlert, animated: true, completion: nil)
                     
-                    errorAlert.addAction(UIAlertAction(title: "好的", style: .default, handler: { (UIAlertAction) in
+                    errorAlert.addAction(UIAlertAction(title: "好的", style: .default, handler: {[unowned self] (UIAlertAction) in
                         self.dismiss(animated: true, completion: nil)
                     }))
                     
