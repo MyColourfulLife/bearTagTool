@@ -178,7 +178,7 @@ class MarkViewController: UIViewController {
         showImage.addSubview(rectView!)
         lastFrame = rectView?.frame
         
-        rectView?.panGestureEndedClosure = {
+        rectView?.panGestureEndedClosure = { [unowned self] in
             self.lastFrame = self.rectView?.frame
 //            print("移动后\(self.lastFrame!)")
         }
