@@ -55,10 +55,10 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
         }
         
         net?.startListening();
-        net?.listener = { status in
-            
+        net?.listener = { [unowned self]  status in
+
             if self.net?.isReachable ?? false{
-                
+
                 switch status{
                 case .notReachable:
                     print("the noework is not reachable")
@@ -69,7 +69,7 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
                 case .reachable(.wwan):
                     print("通过移动网络链接")
                 }
-                
+
             } else {
                 print("网络不可用")
             }
@@ -120,26 +120,26 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
     @objc func shareClick() {
     
         if net?.isReachable ?? false{
-            
+
             if net?.isReachableOnWWAN ?? false {
-            
+
                 let alertCtr = UIAlertController(title: "当前正在使用移动网络", message: "会消耗大量流量", preferredStyle: .alert);
-                alertCtr.addAction(UIAlertAction(title: "确定上传", style: .default, handler: { (action) in
+                alertCtr.addAction(UIAlertAction(title: "确定上传", style: .default, handler: {  [unowned self]  (action) in
                     self.startUpload();
                 }))
-                
+
                 alertCtr.addAction(UIAlertAction(title: "取消上传", style: .destructive, handler: { (action) in
-                    
-                    
+
+
                 }))
                 present(alertCtr, animated: true, completion: {
-                    
+
                 })
             } else {
                 self.startUpload();
             }
-            
-            
+
+
         } else {
             let hub = MBProgressHUD.showAdded(to: view, animated: true);
             hub.label.text = "网络不可用";
@@ -195,12 +195,12 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
                 }
                 
                 //                        3. 上传文件
-                uploadFile(fileInfo: fileInfo, success: { (upload) in
+                uploadFile(fileInfo: fileInfo, success: { [unowned self]  (upload) in
                     self.editItem.isEnabled = true;
                     
                     upload.uploadProgress(closure: { (Progress) in
                         
-                    }).responseJSON(completionHandler: { (response) in
+                    }).responseJSON(completionHandler: { [unowned self]  (response) in
                         
                         if let json = response.result.value {
                             
@@ -235,7 +235,7 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
                         
                     })
                     
-                }, failure: { (err) in
+                }, failure: { [unowned self]  (err) in
                     print(err)
                     self.editItem.isEnabled = true;
                     hub.hide(animated: true)
@@ -256,7 +256,7 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
     /// 删除警告
     @objc func deleteWarn(){
         let alertCtr = UIAlertController(title: "文件已传送完毕", message: "需要删除所有文件吗", preferredStyle: .alert)
-        alertCtr.addAction(UIAlertAction(title: "删除", style: .destructive, handler: { (action) in
+        alertCtr.addAction(UIAlertAction(title: "删除", style: .destructive, handler: {  [unowned self] (action) in
             //删除本地文件
             PhotoManager.defaultManager.deleateAllFiles()
             self.bigSoucre = []
@@ -382,15 +382,6 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
         
 
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
     }
     
     
@@ -469,12 +460,6 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: ImageCell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ImageCell
         
-        // Configure the cell
-//        if self.is3dCanUse {
-//             registerForPreviewing(with: self, sourceView: cell)
-//        }
-        
-       
         let filePath = PhotoManager.defaultManager.createFilePath(fileName: smallSoucre[indexPath.row])
         cell.imageView.sd_setImage(with: URL(fileURLWithPath: filePath))
         
@@ -488,7 +473,7 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
         
         
         cell.deleteBlock = {
-            deleteCell in
+            [unowned self]  deleteCell in
             
             if self.bigSoucre.count == 0 || self.smallSoucre.count == 0{
                 return;
@@ -528,7 +513,7 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
         let btmarCtr = BTMarkViewController(currentIndex:imgIndex,dataSouce:bigSoucre,smallDataSouce:smallSoucre)
 
         btmarCtr.updataDataSouce = {
-            currentIndex,bigSoucre,smallSoucre in
+           [unowned self]   currentIndex,bigSoucre,smallSoucre in
             self.imgIndex = currentIndex
             self.bigSoucre = bigSoucre
             self.smallSoucre = smallSoucre
@@ -574,7 +559,7 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
         
         let btmarCtr = BTMarkViewController(currentIndex:imgIndex,dataSouce:bigSoucre,smallDataSouce:smallSoucre)
         btmarCtr.updataDataSouce = {
-            currentIndex,bigSoucre,smallSoucre in
+          [unowned self]  currentIndex,bigSoucre,smallSoucre in
             self.imgIndex = currentIndex
             self.bigSoucre = bigSoucre
             self.smallSoucre = smallSoucre
@@ -602,6 +587,7 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
     }
 }
     
+
 
 
 
