@@ -474,32 +474,32 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
         
         cell.deleteBlock = {
             [unowned self]  deleteCell in
-            
+
             if self.bigSoucre.count == 0 || self.smallSoucre.count == 0{
                 return;
             }
-            
+
             //获取当前的index
-            let deleteIndex = collectionView.indexPath(for: deleteCell)!
-            //从磁盘中删除原图和缩略图
+            let deleteIndex = self.collectionView!.indexPath(for: deleteCell)!
+//            //从磁盘中删除原图和缩略图
             PhotoManager.defaultManager.deleateFile(name: self.bigSoucre[deleteIndex.row])
             PhotoManager.defaultManager.deleateFile(name: self.smallSoucre[deleteIndex.row])
-            
+
             //从数据库中移除记录
             let fiter: NSPredicate = NSPredicate(format: "fileName == %@", self.bigSoucre[deleteIndex.row])
             if let item =  RealmManager.realmManager.realm.objects(PhotoItem.self).filter(fiter).first{
                 RealmManager.realmManager.delete(item)
             }
-            
+
             //从数据中移除
             self.bigSoucre.remove(at: deleteIndex.row)
             self.smallSoucre.remove(at: deleteIndex.row)
-            
+
             //从界面中删除
-            collectionView.deleteItems(at: [deleteIndex])
-            
+            self.collectionView!.deleteItems(at: [deleteIndex])
+
             self.editItem.isEnabled = self.smallSoucre.count != 0
-            
+
         }
         
     

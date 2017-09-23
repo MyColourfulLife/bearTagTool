@@ -12,7 +12,7 @@ class ImageCell: UICollectionViewCell {
     
     var imageView: UIImageView
     var deleteBtn: UIButton
-    
+//
     typealias DeleteBlock = (UICollectionViewCell)->Void
     var deleteBlock: DeleteBlock?
     
@@ -29,18 +29,19 @@ class ImageCell: UICollectionViewCell {
         imageView.layer.borderWidth = 2
         imageView.layer.borderColor = UIColor.white.cgColor
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
+
+
     @objc func tapDelete() {
-        
+
         if (deleteBlock != nil) {
             deleteBlock!(self)
         }
-        
+
     }
+    
     
 }
