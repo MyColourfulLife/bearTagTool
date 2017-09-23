@@ -75,6 +75,8 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
             }
         }
         
+        
+        
 //        如果支持 添加3dtouch
         is3dCanUse = traitCollection.forceTouchCapability == .available
         if is3dCanUse {
@@ -595,8 +597,9 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
     //额外的操作需要在被pop的控制器中写
     
     
-    
-    
+    deinit {
+        net?.stopListening()
+    }
 }
     
 

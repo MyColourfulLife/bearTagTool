@@ -25,7 +25,8 @@ class ViewController: UIViewController {
     var controlView:        UIView!                         //容器视图
     
     static let uuid: String = UserDefaults.standard.string(forKey: UserDefaultKeys.DeviceInfo.uuid.rawValue)!
-    static let uuidlast4carater = uuid.substring(from: uuid.index(uuid.endIndex, offsetBy: -4))
+    
+    static let uuidlast4carater = uuid[uuid.index(uuid.endIndex, offsetBy: -4)..<uuid.endIndex]
     let deviceType: String? = UserDefaults.standard.string(forKey: UserDefaultKeys.DeviceInfo.modelName.rawValue)
     
     let deviceName: String? = UserDefaults.standard.string(forKey: UserDefaultKeys.DeviceInfo.deviceName.rawValue)
@@ -42,6 +43,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         //        添加控制视图
         configContrlView()

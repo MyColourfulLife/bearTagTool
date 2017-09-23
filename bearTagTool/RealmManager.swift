@@ -125,25 +125,25 @@ class RealmManager: NSObject {
             realm.delete(objects)
         }
     }
-    /// 批量删除数据
-     func delete<T: Object>(_ objects: List<T>) {
-        try! realm.write {
-            realm.delete(objects)
-        }
-    }
-    /// 批量删除数据
-     func delete<T: Object>(_ objects: Results<T>) {
-        try! realm.write {
-            realm.delete(objects)
-        }
-    }
-    
-    /// 批量删除数据
-     func delete<T: Object>(_ objects: LinkingObjects<T>) {
-        try! realm.write {
-            realm.delete(objects)
-        }
-    }
+//    /// 批量删除数据
+//     func delete<T: Object>(_ objects: List<T>) {
+//        try! realm.write {
+//            realm.delete(objects)
+//        }
+//    }
+//    /// 批量删除数据
+//     func delete<T: Object>(_ objects: Results<T>) {
+//        try! realm.write {
+//            realm.delete(objects)
+//        }
+//    }
+//
+//    /// 批量删除数据
+//     func delete<T: Object>(_ objects: LinkingObjects<T>) {
+//        try! realm.write {
+//            realm.delete(objects)
+//        }
+//    }
     
     
     /// 删除所有数据。注意，Realm 文件的大小不会被改变，因为它会保留空间以供日后快速存储数据
