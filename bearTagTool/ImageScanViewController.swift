@@ -15,8 +15,12 @@ private let reuseIdentifier = "Cell"
 //let uploadUrl = "http://192.168.1.170:8080/api/upload"
 let uploadUrl = "http://www.id-bear.com/photoserver/api/upload";
 
+
+
+
 class ImageScanViewController: UICollectionViewController, UIViewControllerPreviewingDelegate {
 
+    let net = NetworkReachabilityManager()
     
     var smallSoucre:Array<String> = []
     var bigSoucre:Array<String> = []
@@ -47,6 +51,27 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
                 smallSoucre.append(name)
             }else{
                 bigSoucre.append(name)
+            }
+        }
+        
+        net?.startListening();
+        net?.listener = { status in
+            
+            if self.net?.isReachable ?? false{
+                
+                switch status{
+                case .notReachable:
+                    print("the noework is not reachable")
+                case .unknown:
+                    print("It is unknown whether the network is reachable")
+                case .reachable(.ethernetOrWiFi):
+                    print("通过WiFi链接")
+                case .reachable(.wwan):
+                    print("通过移动网络链接")
+                }
+                
+            } else {
+                print("网络不可用")
             }
         }
         
@@ -92,102 +117,138 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
     /// 点击上传
     @objc func shareClick() {
     
+        if net?.isReachable ?? false{
+            
+            if net?.isReachableOnWWAN ?? false {
+            
+                let alertCtr = UIAlertController(title: "当前正在使用移动网络", message: "会消耗大量流量", preferredStyle: .alert);
+                alertCtr.addAction(UIAlertAction(title: "确定上传", style: .default, handler: { (action) in
+                    self.startUpload();
+                }))
+                
+                alertCtr.addAction(UIAlertAction(title: "取消上传", style: .destructive, handler: { (action) in
+                    
+                    
+                }))
+                present(alertCtr, animated: true, completion: {
+                    
+                })
+            } else {
+                self.startUpload();
+            }
+            
+            
+        } else {
+            let hub = MBProgressHUD.showAdded(to: view, animated: true);
+            hub.label.text = "网络不可用";
+            hub.removeFromSuperViewOnHide = true;
+            hub.hide(animated: true, afterDelay: 1);
+            return;
+        }
+        
+        
+        
+    }
+    
+    
+    func startUpload() {
+        
         if self.bigSoucre.count < 1 {
             editItem.isEnabled = false;
             return;
         }
         editItem.isEnabled = false;
         
-                let databaseToShare = RealmManager.realmManager.realm.configuration.fileURL!
-                var items = [databaseToShare]
-                //imgToShare
-                var count = 1
-                let maxcount = self.bigSoucre.count
-                let hub = MBProgressHUD.showAdded(to: self.view, animated: true)
-                hub.mode = .determinateHorizontalBar
-                hub.label.text = "共\(self.bigSoucre.count)张，正在上传第\(count)张"
+        let databaseToShare = RealmManager.realmManager.realm.configuration.fileURL!
+        var items = [databaseToShare]
+        //imgToShare
+        var count = 1
+        let maxcount = self.bigSoucre.count
+        let hub = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hub.mode = .determinateHorizontalBar
+        hub.label.text = "共\(self.bigSoucre.count)张，正在上传第\(count)张"
+        
+        for imgName in self.bigSoucre {
+            let imgPath = PhotoManager.defaultManager.createFilePath(fileName: imgName)
+            let fileUrl = URL(fileURLWithPath: imgPath)
+            items.append(fileUrl)
+            
+            //                    1. 从数据库查找记录
+            let fiter: NSPredicate = NSPredicate(format: "fileName == %@", imgName)
+            if let item =  RealmManager.realmManager.realm.objects(PhotoItem.self).filter(fiter).first{
                 
-                for imgName in self.bigSoucre {
-                    let imgPath = PhotoManager.defaultManager.createFilePath(fileName: imgName)
-                    let fileUrl = URL(fileURLWithPath: imgPath)
-                    items.append(fileUrl)
+                //2. 准备所需参数
+                let fileInfo = NSMutableDictionary()
+                fileInfo["fileName"] = item.fileName
+                fileInfo["fileUrl"] = fileUrl
+                fileInfo["deviceType"] = item.deviceType
+                fileInfo["deviceName"] = item.deviceName
+                fileInfo["fileSize"] = ["width":item.fileWidth,"height":item.fileHeight]
+                fileInfo["createTime"] = String(item.createDate)
+                fileInfo["uuid"] = uuidString
+                if let frame = item.frame {
+                    fileInfo["markFrame"] = ["x":frame.x,"y":frame.y,"width":frame.width,"height":frame.height]
+                } else {
+                    fileInfo["markFrame"] = [:]
+                }
+                
+                //                        3. 上传文件
+                uploadFile(fileInfo: fileInfo, success: { (upload) in
+                    self.editItem.isEnabled = true;
                     
-//                    1. 从数据库查找记录
-                    let fiter: NSPredicate = NSPredicate(format: "fileName == %@", imgName)
-                    if let item =  RealmManager.realmManager.realm.objects(PhotoItem.self).filter(fiter).first{
+                    upload.uploadProgress(closure: { (Progress) in
                         
-                        //2. 准备所需参数
-                        let fileInfo = NSMutableDictionary()
-                        fileInfo["fileName"] = item.fileName
-                        fileInfo["fileUrl"] = fileUrl
-                        fileInfo["deviceType"] = item.deviceType
-                        fileInfo["deviceName"] = item.deviceName
-                        fileInfo["fileSize"] = ["width":item.fileWidth,"height":item.fileHeight]
-                        fileInfo["createTime"] = String(item.createDate)
-                        fileInfo["uuid"] = uuidString
-                        if let frame = item.frame {
-                             fileInfo["markFrame"] = ["x":frame.x,"y":frame.y,"width":frame.width,"height":frame.height]
-                        } else {
-                            fileInfo["markFrame"] = [:]
-                        }
-                       
-//                        3. 上传文件
-                        uploadFile(fileInfo: fileInfo, success: { (upload) in
-                         self.editItem.isEnabled = true;
+                    }).responseJSON(completionHandler: { (response) in
+                        
+                        if let json = response.result.value {
                             
-                            upload.uploadProgress(closure: { (Progress) in
-   
-                            }).responseJSON(completionHandler: { (response) in
-
-                                if let json = response.result.value {
+                            let data = json as! NSDictionary
+                            
+                            let code = data["code"]! as! Int
+                            
+                            if code == 1 {
+                                hub.progress = Float(count)/Float(maxcount)
+                                hub.label.text = "共\(maxcount)张，正在上传第\(count)张"
+                                if count == maxcount {
+                                    hub.label.text = "上传完成"
+                                    hub.hide(animated: true, afterDelay: 1)
                                     
-                                let data = json as! NSDictionary
-                                    
-                                let code = data["code"]! as! Int
-                                   
-                                    if code == 1 {
-                                        hub.progress = Float(count)/Float(maxcount)
-                                        hub.label.text = "共\(maxcount)张，正在上传第\(count)张"
-                                        if count == maxcount {
-                                            hub.label.text = "上传完成"
-                                            hub.hide(animated: true, afterDelay: 1)
-                                            
-                                            //询问是否要删除所有文件
-                                            let delay = DispatchTime.now() + 1
-                                            DispatchQueue.main.asyncAfter(deadline: delay) {
-                                                self.deleteWarn();
-                                            }
-                                            
-                                        } else{
-                                            count = count + 1
-                                        }
-                                    } else {
-                                        print("图片上传失败")
-                                        hub.label.text = "图片上传失败"
-                                        count = count + 1
+                                    //询问是否要删除所有文件
+                                    let delay = DispatchTime.now() + 1
+                                    DispatchQueue.main.asyncAfter(deadline: delay) {
+                                        self.deleteWarn();
                                     }
                                     
+                                } else{
+                                    count = count + 1
                                 }
-                                
-
-                            })
+                            } else {
+                                print("图片上传失败")
+                                hub.label.text = "图片上传失败"
+                                count = count + 1
+                            }
                             
-                       }, failure: { (err) in
-                        print(err)
-                         self.editItem.isEnabled = true;
-                        hub.hide(animated: true)
-                       })
+                        }
                         
                         
-                    }
+                    })
                     
-
-                    
-                }
-        
+                }, failure: { (err) in
+                    print(err)
+                    self.editItem.isEnabled = true;
+                    hub.hide(animated: true)
+                })
+                
+                
+            }
+            
+            
+            
+        }
         
         
     }
+    
     
     
     /// 删除警告
