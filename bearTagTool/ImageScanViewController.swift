@@ -95,14 +95,15 @@ class ImageScanViewController: UICollectionViewController, UIViewControllerPrevi
         title = "图片采集库"
         
         shareItem = UIBarButtonItem(title: "上传", style: .plain, target: self, action:  #selector(shareClick))
-        shareItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor:UIColor.gray], for: .disabled)
+        
+        shareItem.setTitleTextAttributes([NSForegroundColorAttributeName:UIColor.gray], for: .disabled)
         
         editItem = UIBarButtonItem(title: "删除", style: .plain, target: self, action:  #selector(editClick))
-        editItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor:UIColor.gray], for: .disabled)
+        editItem.setTitleTextAttributes([NSForegroundColorAttributeName:UIColor.gray], for: .disabled)
         
         
         sortItem = UIBarButtonItem(title: "正序", style: .plain, target: self, action:  #selector(sortClick))
-        sortItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor:UIColor.gray], for: .disabled)
+        sortItem.setTitleTextAttributes([NSForegroundColorAttributeName:UIColor.gray], for: .disabled)
         
        locateCellBtn = UIBarButtonItem(title: "定位", style: .plain, target: self, action:  #selector(locateCell))
         

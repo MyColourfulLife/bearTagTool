@@ -23,7 +23,7 @@
 		11B2DDF71F504D4300F38062 /* PhotoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B2DDF61F504D4300F38062 /* PhotoItem.swift */; };
 		11CE5DA71F4FCE68000E0232 /* MarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CE5DA61F4FCE68000E0232 /* MarkViewController.swift */; };
 		11DD41281F592EAD0064692D /* BTMarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DD41271F592EAD0064692D /* BTMarkViewController.swift */; };
-		18892D77AAB204D31A948E06 /* Pods_bearTagTool.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE8ACD54EAA0B580DDA4E3B3 /* Pods_bearTagTool.framework */; };
+		8FDE48EA3EFEE6C7524FD08C /* Pods_bearTagTool.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E24A67FC9DEF79471ED001AF /* Pods_bearTagTool.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,9 +45,9 @@
 		11B2DDF61F504D4300F38062 /* PhotoItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoItem.swift; sourceTree = "<group>"; };
 		11CE5DA61F4FCE68000E0232 /* MarkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkViewController.swift; sourceTree = "<group>"; };
 		11DD41271F592EAD0064692D /* BTMarkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTMarkViewController.swift; sourceTree = "<group>"; };
-		12B06843C7AC2B2F6357D0C1 /* Pods-bearTagTool.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bearTagTool.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bearTagTool/Pods-bearTagTool.debug.xcconfig"; sourceTree = "<group>"; };
-		64CDE15EB4AAD079D80D08D5 /* Pods-bearTagTool.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bearTagTool.release.xcconfig"; path = "Pods/Target Support Files/Pods-bearTagTool/Pods-bearTagTool.release.xcconfig"; sourceTree = "<group>"; };
-		FE8ACD54EAA0B580DDA4E3B3 /* Pods_bearTagTool.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bearTagTool.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43ADF55E8455F25D3064BA05 /* Pods-bearTagTool.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bearTagTool.debug.xcconfig"; path = "Pods/Target Support Files/Pods-bearTagTool/Pods-bearTagTool.debug.xcconfig"; sourceTree = "<group>"; };
+		6CC2AC4D4DCB24222A61A290 /* Pods-bearTagTool.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bearTagTool.release.xcconfig"; path = "Pods/Target Support Files/Pods-bearTagTool/Pods-bearTagTool.release.xcconfig"; sourceTree = "<group>"; };
+		E24A67FC9DEF79471ED001AF /* Pods_bearTagTool.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bearTagTool.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18892D77AAB204D31A948E06 /* Pods_bearTagTool.framework in Frameworks */,
+				8FDE48EA3EFEE6C7524FD08C /* Pods_bearTagTool.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,8 +67,8 @@
 			children = (
 				1192BE8E1F4C09B600C834F8 /* bearTagTool */,
 				1192BE8D1F4C09B600C834F8 /* Products */,
-				A5C5B2F8FCBFFC2EC1D9B376 /* Pods */,
-				6B1A9D743A2B8D06DF88280A /* Frameworks */,
+				2D1832A4DB30F5159A956065 /* Pods */,
+				9BF5F7AAAC6F89F90DB18BC9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -128,21 +128,21 @@
 			name = "图片标注";
 			sourceTree = "<group>";
 		};
-		6B1A9D743A2B8D06DF88280A /* Frameworks */ = {
+		2D1832A4DB30F5159A956065 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				FE8ACD54EAA0B580DDA4E3B3 /* Pods_bearTagTool.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		A5C5B2F8FCBFFC2EC1D9B376 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				12B06843C7AC2B2F6357D0C1 /* Pods-bearTagTool.debug.xcconfig */,
-				64CDE15EB4AAD079D80D08D5 /* Pods-bearTagTool.release.xcconfig */,
+				43ADF55E8455F25D3064BA05 /* Pods-bearTagTool.debug.xcconfig */,
+				6CC2AC4D4DCB24222A61A290 /* Pods-bearTagTool.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		9BF5F7AAAC6F89F90DB18BC9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E24A67FC9DEF79471ED001AF /* Pods_bearTagTool.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,12 +152,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1192BEA11F4C09B600C834F8 /* Build configuration list for PBXNativeTarget "bearTagTool" */;
 			buildPhases = (
-				7024DE9F364420D79D69C72E /* [CP] Check Pods Manifest.lock */,
+				97278320C51C955809A1F0BE /* [CP] Check Pods Manifest.lock */,
 				1192BE881F4C09B600C834F8 /* Sources */,
 				1192BE891F4C09B600C834F8 /* Frameworks */,
 				1192BE8A1F4C09B600C834F8 /* Resources */,
-				50CA02F19AC874CE26C3A740 /* [CP] Embed Pods Frameworks */,
-				AFD965259E849FA057D3BA6C /* [CP] Copy Pods Resources */,
+				0BC1F304D81988FB4B741BA5 /* [CP] Embed Pods Frameworks */,
+				14C6E883390D6FD5EF265B35 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -218,7 +218,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		50CA02F19AC874CE26C3A740 /* [CP] Embed Pods Frameworks */ = {
+		0BC1F304D81988FB4B741BA5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -246,7 +246,22 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-bearTagTool/Pods-bearTagTool-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7024DE9F364420D79D69C72E /* [CP] Check Pods Manifest.lock */ = {
+		14C6E883390D6FD5EF265B35 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-bearTagTool/Pods-bearTagTool-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		97278320C51C955809A1F0BE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -262,21 +277,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AFD965259E849FA057D3BA6C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-bearTagTool/Pods-bearTagTool-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -327,6 +327,7 @@
 		1192BE9F1F4C09B600C834F8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -352,15 +353,16 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shenzhen iDBear Network Technology Co., Ltd. (VE9DAVS879)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -376,14 +378,15 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		1192BEA01F4C09B600C834F8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -409,9 +412,10 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shenzhen iDBear Network Technology Co., Ltd. (VE9DAVS879)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -426,40 +430,48 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		1192BEA21F4C09B600C834F8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 12B06843C7AC2B2F6357D0C1 /* Pods-bearTagTool.debug.xcconfig */;
+			baseConfigurationReference = 43ADF55E8455F25D3064BA05 /* Pods-bearTagTool.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VE9DAVS879;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = bearTagTool/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.id-bear.bearTagTool";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		1192BEA31F4C09B600C834F8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 64CDE15EB4AAD079D80D08D5 /* Pods-bearTagTool.release.xcconfig */;
+			baseConfigurationReference = 6CC2AC4D4DCB24222A61A290 /* Pods-bearTagTool.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VE9DAVS879;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = bearTagTool/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.id-bear.bearTagTool";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

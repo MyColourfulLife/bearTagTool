@@ -206,7 +206,8 @@ class ViewController: UIViewController {
         do{
             //            1.创建会话 输入 和 输出
             self.session = AVCaptureSession()
-            device = AVCaptureDevice.default(for: .video)
+            
+            device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
             self.videoInput = try AVCaptureDeviceInput(device: device)
             self.stillImageOutput = AVCaptureStillImageOutput()
             let outPutsetting = [AVVideoCodecKey: AVVideoCodecJPEG]
@@ -218,7 +219,7 @@ class ViewController: UIViewController {
             
             //            3.初始化预览层
             self.layerPreview = AVCaptureVideoPreviewLayer(session: self.session)
-            self.layerPreview.videoGravity = AVLayerVideoGravity.resizeAspectFill
+            self.layerPreview.videoGravity = AVLayerVideoGravityResizeAspectFill
             self.layerPreview.frame = self.controlView.frame
             self.view.layer.insertSublayer(self.layerPreview, at: 0)
             
@@ -290,7 +291,7 @@ class ViewController: UIViewController {
         
 //        self.shutterAnimation()
         
-        let stillimageConnect: AVCaptureConnection = self.stillImageOutput.connection(with: .video)!
+        let stillimageConnect: AVCaptureConnection = self.stillImageOutput.connection(withMediaType: AVMediaTypeVideo)!
         
         let curDeviceOrientation = UIDevice.current.orientation
         
